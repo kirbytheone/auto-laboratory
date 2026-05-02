@@ -1,0 +1,7 @@
+pytest
+requests
+selenium
+playwright
+django
+pytest-django
+
