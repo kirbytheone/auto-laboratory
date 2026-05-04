@@ -19,3 +19,17 @@ def test_get_post_invalid_id(json_placeholder_client, post_id):
     response = json_placeholder_client.get_post(9999)
 
     validate_status_code(response, 404)
+
+def test_create_post(json_placeholder_client):
+    payload = {
+        'title': 'test POST title',
+        'body': 'test POST body',
+        'userId': 1,
+    }
+
+    response = json_placeholder_client.create_post(payload)
+
+    validate_status_code(response, 201)
+    validate_response_field(response, 'title', payload['title'])
+    validate_response_field(response, 'body', payload['body'])
+    validate_response_field(response, 'userId', payload['userId'])
