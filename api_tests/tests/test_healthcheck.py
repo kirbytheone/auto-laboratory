@@ -1,17 +1,9 @@
-import requests
-from api_tests.clients.jsonplaceholder_client import JsonPlaceholderClient
+import pytest
 
-## Health check
-def test_healthcheck():
-    response = requests.get('https://jsonplaceholder.typicode.com/posts/1')
+
+@pytest.mark.parametrize("post_id", [1, 2, 3])
+def test_get_post_by_id(json_placeholder_client, post_id):
+    response = json_placeholder_client.get_post(post_id)
 
     assert response.status_code == 200
-    assert response.json()["id"] == 1
-
-## Using Class json client
-def get_post_by_id():
-    client = JsonPlaceholderClient()
-
-    response_2 = client.get_post(1)
-    assert response_2.status_code == 200
-    assert response_2.json()["id"] == 1
+    assert response.json()["id"] == post_id
