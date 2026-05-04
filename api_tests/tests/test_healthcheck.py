@@ -8,6 +8,7 @@ def test_get_post_by_id(json_placeholder_client, post_id):
 
     validate_status_code(response, 200)
     validate_response_field(response, "id", post_id)
+    validate_post_schema(response)
 
 @pytest.mark.parametrize("post_id", [
     0, #boundary invalid value
