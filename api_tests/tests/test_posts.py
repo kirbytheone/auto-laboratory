@@ -47,3 +47,25 @@ def test_create_post_multiple(json_placeholder_client, title, body, user_id):
     validate_response_field(response, 'title', title)
     validate_response_field(response, 'body', body)
     validate_response_field(response, 'userId', user_id)
+
+def test_update_post(json_placeholder_client):
+    post_id = 1
+
+    payload = get_create_post_payload(
+        title='Updated Title',
+        body='Updated body',
+        user_id=1,
+    )
+
+    response = json_placeholder_client.update_post(post_id, payload)
+
+    validate_status_code(response, 200)
+    validate_response_field(response, 'title', payload['title'])
+    validate_response_field(response, 'body', payload['body'])
+    validate_response_field(response, 'userId', payload['userId'])
+
+def test_delete_post(json_placeholder_client):
+    post_id = 1
+
+    response = json_placeholder_client.delete_post(post_id)
+    validate_status_code(response, 200)
