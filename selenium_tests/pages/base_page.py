@@ -13,6 +13,9 @@ class BasePage:
     def find_element(self, locator: tuple[str, str]):
         return self.wait.until(EC.visibility_of_element_located(locator))
 
+    def wait_until_clickable(self, locator: tuple[str, str]):
+        return self.wait.until(EC.element_to_be_clickable(locator))
+
     def click(self, locator: tuple[str, str]):
         self.find_element(locator).click()
 
@@ -21,8 +24,14 @@ class BasePage:
         element.clear()
         element.send_keys(text)
 
+    def get_text(self, locator: tuple[str, str]):
+        return self.find_element(locator).text
+
     def get_title(self):
         return self.driver.title
 
     def wait_for_title_content(self, text: str):
         self.wait.until(lambda driver: text.lower() in driver.title.lower())
+
+    def wait_until_url_contains(self, text: str):
+        self.wait.until(lambda driver: text in driver.current_url)
