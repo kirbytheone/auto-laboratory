@@ -7,6 +7,7 @@ def test_dynamic_loading(driver):
     page.open_page()
     page.click_start()
 
+    page.wait_until_loading_disappears()
     text = page.get_finish_text()
 
     assert text == 'Hello World!'

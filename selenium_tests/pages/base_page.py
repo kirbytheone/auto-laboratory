@@ -41,3 +41,6 @@ class BasePage:
 
     def wait_until_url_contains(self, text: str):
         self.wait.until(lambda driver: text in driver.current_url)
+
+    def wait_until_element_disappears(self, locator: tuple[str, str]):
+        self.wait.until(lambda driver: not driver.find_element(*locator).is_displayed())
