@@ -1,4 +1,4 @@
 def test_playwright_smoke(page):
     page.goto("https://the-internet.herokuapp.com")
-
+    assert False
     assert "The Internet" in page.title()

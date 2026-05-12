@@ -28,7 +28,7 @@ def page(browser, request):
 
     yield page
 
-    if request.node.report_call.failed:
+    if request.node.rep_call.failed:
         traceback_path = PLAYWRIGHT_REPORTS_DIR / f'{request.node.name}.zip'
 
         context.tracing.stop(path=str(traceback_path))
@@ -48,6 +48,6 @@ def page(browser, request):
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
-    report = outcome.get_result()
+    rep = outcome.get_result()
 
-    setattr(item, "report_" + report.when, report)
+    setattr(item, "rep_" + rep.when, rep)
