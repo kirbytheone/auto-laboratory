@@ -18,5 +18,8 @@ class LoginPage(BasePage):
         self.fill(self.PASSWORD_INPUT, password)
         self.click(self.LOGIN_BUTTON)
 
+    def flash_message(self):
+        return self.get_locator(self.FLASH_MESSAGE)
+
     def get_flash_message(self):
         return self.get_text(self.FLASH_MESSAGE)

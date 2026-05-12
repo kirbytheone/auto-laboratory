@@ -17,3 +17,6 @@ class BasePage:
 
     def get_title(self):
         return self.page.title()
+
+    def get_locator(self, locator: str):
+        return self.page.locator(locator)
