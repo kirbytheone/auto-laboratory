@@ -37,14 +37,6 @@ def page(browser, request):
 
     context.close()
 
-    # with sync_playwright() as playwright:
-    #     context = browser.new_context()
-    #     page = context.new_page()
-    #
-    #     yield page
-    #
-    #     context.close()
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
