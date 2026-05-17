@@ -23,6 +23,7 @@ def create_task(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
         priority = request.POST.get('priority')
+        due_date = request.POST.get("due_date") or None
 
         Task.objects.create(
             title=title,
@@ -32,6 +33,40 @@ def create_task(request):
         )
         return redirect("task_list")
     return render(request, "tasks/create_task.html")
+
+@login_required
+def edit_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id, owner=request.user)
+
+    if request.method == "POST":
+        task.title = request.POST.get("title")
+        task.description = request.POST.get("description")
+        task.status = request.POST.get("status")
+        task.priority = request.POST.get("priority")
+        task.due_date = request.POST.get("due_date") or None
+        task.save()
+
+        return redirect("task_detail", task_id=task_id)
+
+    return render(request, "tasks/edit_task.html", {"task": task})
+
+@login_required
+def delete_task(request, task_id):
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        owner=request.user,
+    )
+
+    if request.method == "POST":
+        task.delete()
+        return redirect("task_list")
+
+    return render(
+        request,
+        "tasks/delete_task.html",
+        {"task": task},
+    )
 
 @login_required
 def task_detail(request, task_id):

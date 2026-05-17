@@ -10,6 +10,13 @@
     <p>Description: {{ task.description }}</p>
     <p>Status: {{ task.status }}</p>
     <p>Priority: {{ task.priority }}</p>
+    <p>Due Date: {{ task.due_date }}</p>
     <p>Owner: {{ task.owner.username }}</p>
+
+    <a href="{% url 'edit_task' task.id %}">Edit Task</a>
+    <br>
+    <a href="{% url 'delete_task' task.id %}">Delete Task</a>
+    <br>
+    <a href="{% url 'task_list' %}">Back to tasks</a>
 </body>
 </html>

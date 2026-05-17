@@ -27,6 +27,11 @@ class Task(models.Model):
         choices=Priority.choices,
         default=Priority.MEDIUM,
     )
+    
+    due_date = models.DateField(
+        null=True,
+        blank=True,
+    )
 
     owner = models.ForeignKey(
         User,

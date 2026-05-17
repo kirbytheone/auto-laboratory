@@ -11,7 +11,12 @@
         <ul>
             {% for task in tasks %}
                 <li>
-                    {{ task.title }} | {{ task.status }} | {{ task.priority }}
+                    <a href="{% url 'task_detail' task.id %}">
+                        {{ task.title }}
+                    </a>
+                    | {{ task.status }}
+                    | {{ task.priority }}
+                    | {{ task.due_date }}
                 </li>
             {% endfor %}
         </ul>
