@@ -9,12 +9,27 @@ from tasks.models import Task, Comment, Attachment
 
 @login_required
 def task_list(request):
-    tasks = Task.objects.filter(owner=request.user).order_by("-created_at")
+    tasks = Task.objects.filter(owner=request.user)
+
+    status = request.GET.get("status")
+    priority = request.GET.get("priority")
+
+    if status:
+        tasks = tasks.filter(status=status)
+
+    if priority:
+        tasks = tasks.filter(priority=priority)
+
+    tasks = tasks.order_by("-created_at")
 
     return render(
         request,
         "tasks/task_list.html",
-        {"tasks": tasks},
+        {
+            "tasks": tasks,
+            "selected_status": status,
+            "selected_priority": priority,
+        },
     )
 
 @login_required
