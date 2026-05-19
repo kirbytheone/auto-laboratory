@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
-from tasks.models import Task, Comment
+from tasks.models import Task, Comment, Attachment
 
 
 @login_required
@@ -78,6 +78,7 @@ def task_detail(request, task_id):
 
     if request.method == "POST":
         text = request.POST.get("text")
+        uploaded_file = request.FILES.get("file")
 
         if text:
             Comment.objects.create(
@@ -85,9 +86,18 @@ def task_detail(request, task_id):
                 author=request.user,
                 text=text,
             )
+
+        if uploaded_file:
+            Attachment.objects.create(
+                task=task,
+                uploaded_by=request.user,
+                file=uploaded_file,
+            )
+
         return redirect("task_detail", task_id=task.id)
 
     comments = task.comments.order_by("-created_at")
+    attachments = task.attachments.order_by("-created_at")
 
     return render(
         request,
@@ -95,5 +105,6 @@ def task_detail(request, task_id):
         {
             'task': task,
             'comments': comments,
+            'attachments': attachments,
         },
     )

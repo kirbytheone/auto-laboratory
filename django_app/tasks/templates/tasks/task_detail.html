@@ -39,6 +39,34 @@
 
         <button type="submit">Add Comment</button>
     </form>
+    <h2>Attachments</h2>
+
+    {% if attachments %}
+    <ul>
+        {% for attachment in attachments %}
+        <li>
+            <a href="{{ attachment.file.url }}">
+                {{ attachment.filename }}
+            </a>
+            <br>
+            <small>Uploaded by {{ attachment.uploaded_by.username }} at {{ attachment.created_at }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No attachments yet.</p>
+    {% endif %}
+
+    <h3>Add Attachment</h3>
+
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="file" name="file">
+    <br><br>
+
+    <button type="submit">Upload Attachment</button>
+</form>
 
     <a href="{% url 'edit_task' task.id %}">Edit Task</a>
     <br>

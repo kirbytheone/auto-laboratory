@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tasks.models import Task, Comment
+from tasks.models import Task, Comment, Attachment
 
 # Register your models here.
 @admin.register(Task)
@@ -27,3 +27,7 @@ class TaskAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("id", "task", "author", "created_at")
     search_fields = ("task", "task__title", "author__username")
+
+@admin.register(Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    list_display = ("id", "task", "uploaded_by", "created_at")

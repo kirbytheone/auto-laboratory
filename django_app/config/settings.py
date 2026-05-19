@@ -117,3 +117,5 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 LOGIN_URL = "/admin/login/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

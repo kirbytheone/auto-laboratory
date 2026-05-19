@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -64,3 +66,26 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author.username} on {self.task.title}"
+
+class Attachment(models.Model):
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        related_name="attachments",
+    )
+
+    uploaded_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="attachments",
+    )
+
+    file = models.FileField(upload_to="attachments/")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def filename(self):
+        return Path(self.file.name).name
+
+    def __str__(self):
+        return self.filename
