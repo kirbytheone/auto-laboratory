@@ -12,6 +12,33 @@
     <p>Priority: {{ task.priority }}</p>
     <p>Due Date: {{ task.due_date }}</p>
     <p>Owner: {{ task.owner.username }}</p>
+    <h2>Comments</h2>
+
+    {% if comments %}
+    <ul>
+        {% for comment in comments %}
+        <li>
+            <strong>{{ comment.author.username }}</strong>:
+            {{ comment.text }}
+            <br>
+            <small>{{ comment.created_at }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No comments yet.</p>
+    {% endif %}
+
+    <h3>Add Comment</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <textarea name="text" placeholder="Write a comment" required></textarea>
+        <br><br>
+
+        <button type="submit">Add Comment</button>
+    </form>
 
     <a href="{% url 'edit_task' task.id %}">Edit Task</a>
     <br>

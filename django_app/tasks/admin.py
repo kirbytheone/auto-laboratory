@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tasks.models import Task
+from tasks.models import Task, Comment
 
 # Register your models here.
 @admin.register(Task)
@@ -22,3 +22,8 @@ class TaskAdmin(admin.ModelAdmin):
         "title",
         "description",
     )
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id", "task", "author", "created_at")
+    search_fields = ("task", "task__title", "author__username")
