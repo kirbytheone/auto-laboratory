@@ -9,3 +9,4 @@ htmlcov/
 .coverage
 playwright_tests/auth/*.json
 django_app/media/
+reports/
