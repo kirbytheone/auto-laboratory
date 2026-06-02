@@ -255,27 +255,3 @@ def test_logged_user_can_delete_task(client):
 
     assert response.status_code == 302
     assert Task.objects.count() == 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
