@@ -45,6 +45,7 @@ def create_task(request):
             description=description,
             priority=priority,
             owner=request.user,
+            due_date=due_date,
         )
         return redirect("task_list")
     return render(request, "tasks/create_task.html")
