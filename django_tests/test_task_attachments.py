@@ -43,6 +43,7 @@ def test_logged_user_can_upload_attachment_to_task(client):
 
     print(attachment.file.path)
 
+
     assert attachment.task == task
     assert attachment.uploaded_by == user
     assert attachment.filename.startswith("view_upload")
