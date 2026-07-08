@@ -6,7 +6,8 @@ from tasks.models import Task, Attachment
 
 
 @pytest.mark.django_db
-def test_logged_user_can_upload_attachment_to_task(client):
+def test_logged_user_can_upload_attachment_to_task(client,
+                                                   temporary_media_root):
     user = User.objects.create_user(
         username="attachmentviewuser",
         password="testpass123",
