@@ -5,6 +5,7 @@ from selenium_tests.pages.base_page import BasePage
 
 class LoginPage(BasePage):
 
+    # TODO: use basePage attributes via super().__init__(driver) ?
     URL = "https://the-internet.herokuapp.com/login"
 
     USERNAME_INPUT = (By.ID, "username")

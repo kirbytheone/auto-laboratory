@@ -3,6 +3,10 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
 
+    # TODO: protected methods that should be accessible from test pages, ag. _open(url) etc.?
+    # TODO: add all necessary waits here in base page, using explicit waits,
+    #       include time as a parameter to make availability to set timeout(do this in init?)
+
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
@@ -23,6 +27,7 @@ class BasePage:
         self.find_element(locator).click()
 
     def type_text(self, locator: tuple[str, str], text: str):
+        # TODO: add explicit wait_until_element_is_visible before typing, plus add timeout here
         element = self.find_element(locator)
         element.clear()
         element.send_keys(text)
@@ -42,5 +47,6 @@ class BasePage:
     def wait_until_url_contains(self, text: str):
         self.wait.until(lambda driver: text in driver.current_url)
 
+    # TODO: rebuild to invisibility_of_element_located
     def wait_until_element_disappears(self, locator: tuple[str, str]):
         self.wait.until(lambda driver: not driver.find_element(*locator).is_displayed())
