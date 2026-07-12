@@ -82,6 +82,7 @@ def test_logged_in_user_can_create_task(client):
         {
             "title": "Created From Test",
             "description": "Created using Django test client",
+            "status": Task.Status.TODO,
             "priority": Task.Priority.HIGH,
             "due_date": "2026-05-20",
         },
@@ -90,7 +91,7 @@ def test_logged_in_user_can_create_task(client):
     assert response.status_code == 302
     assert Task.objects.count() == 1
 
-    task = Task.objects.first()
+    task = Task.objects.get()
 
     assert task.title == "Created From Test"
     assert task.description == "Created using Django test client"
@@ -115,6 +116,7 @@ def test_user_can_create_task_with_no_due_date(client):
         {
             "title": "Task Without Due Date",
             "description": "No deadline",
+            "status": Task.Status.TODO,
             "priority": Task.Priority.MEDIUM,
             "due_date": "",
         },
@@ -122,7 +124,7 @@ def test_user_can_create_task_with_no_due_date(client):
 
     assert response.status_code == 302
 
-    task = Task.objects.first()
+    task = Task.objects.get()
 
     assert task.title == "Task Without Due Date"
     assert task.due_date is None

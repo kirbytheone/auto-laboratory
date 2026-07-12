@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
 from tasks.models import Task, Comment, Attachment
+from .forms import TaskForm
 
 
 @login_required
@@ -35,36 +36,76 @@ def task_list(request):
 @login_required
 def create_task(request):
     if request.method == "POST":
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        priority = request.POST.get('priority')
-        due_date = request.POST.get("due_date") or None
+        form = TaskForm(request.POST)
 
-        Task.objects.create(
-            title=title,
-            description=description,
-            priority=priority,
-            owner=request.user,
-            due_date=due_date,
-        )
-        return redirect("task_list")
-    return render(request, "tasks/create_task.html")
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.owner = request.user
+            task.save()
+            return redirect("task_list")
+    else:
+        form = TaskForm()
+
+    return render(
+        request,
+        "tasks/create_task.html",
+        {"form": form},
+    )
+    # if request.method == "POST":
+    #     title = request.POST.get('title')
+    #     description = request.POST.get('description')
+    #     priority = request.POST.get('priority')
+    #     due_date = request.POST.get("due_date") or None
+    #
+    #     Task.objects.create(
+    #         title=title,
+    #         description=description,
+    #         priority=priority,
+    #         owner=request.user,
+    #         due_date=due_date,
+    #     )
+    #     return redirect("task_list")
+    # return render(request, "tasks/create_task.html")
 
 @login_required
 def edit_task(request, task_id):
-    task = get_object_or_404(Task, id=task_id, owner=request.user)
-
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        owner=request.user,
+    )
     if request.method == "POST":
-        task.title = request.POST.get("title")
-        task.description = request.POST.get("description")
-        task.status = request.POST.get("status")
-        task.priority = request.POST.get("priority")
-        task.due_date = request.POST.get("due_date") or None
-        task.save()
+        form = TaskForm(
+            request.POST,
+            instance=task
+        )
+        if form.is_valid():
+            form.save()
+            return redirect("task_detail", task_id=task.id)
+    else:
+        form = TaskForm(instance=task)
 
-        return redirect("task_detail", task_id=task_id)
-
-    return render(request, "tasks/edit_task.html", {"task": task})
+    return render(
+        request,
+        "tasks/edit_task.html",
+        {
+            "form": form,
+            "task": task
+        },
+    )
+    # task = get_object_or_404(Task, id=task_id, owner=request.user)
+    #
+    # if request.method == "POST":
+    #     task.title = request.POST.get("title")
+    #     task.description = request.POST.get("description")
+    #     task.status = request.POST.get("status")
+    #     task.priority = request.POST.get("priority")
+    #     task.due_date = request.POST.get("due_date") or None
+    #     task.save()
+    #
+    #     return redirect("task_detail", task_id=task_id)
+    #
+    # return render(request, "tasks/edit_task.html", {"task": task})
 
 @login_required
 def delete_task(request, task_id):
