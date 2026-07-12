@@ -12,5 +12,6 @@ urlpatterns = [
          views.add_comment, name="add_comment"),
     path("<int:task_id>/attachments/upload/",
          views.upload_attachment, name="upload_attachment"),
+    path("register/", views.register, name="register"),
 ]
 
