@@ -1,11 +1,14 @@
 import pytest
 from django.contrib.auth.models import User
+from django.urls import reverse
 from tasks.models import Task
 
 
 @pytest.mark.django_db
 def test_anonymous_user_redirect(client):
-    response = client.get("/tasks/")
+    response = client.get(
+        reverse("task_list")
+    )
 
     assert response.status_code == 302
 
@@ -27,7 +30,9 @@ def test_logged_user_able_view_task_list(client):
     )
 
     assert login_successful is True
-    response = client.get("/tasks/")
+    response = client.get(
+        reverse("task_list")
+    )
 
     assert response.status_code == 200
     assert b"Visible Task" in response.content
@@ -59,7 +64,9 @@ def test_task_list_shows_only_logged_users_tasks(client):
         password="testpass123",
     )
 
-    response = client.get("/tasks/")
+    response = client.get(
+        reverse("task_list")
+    )
 
     assert response.status_code == 200
     assert b"My Task" in response.content
@@ -78,7 +85,7 @@ def test_logged_in_user_can_create_task(client):
     )
 
     response = client.post(
-        "/tasks/create/",
+        reverse("create_task"),
         {
             "title": "Created From Test",
             "description": "Created using Django test client",
@@ -112,7 +119,7 @@ def test_user_can_create_task_with_no_due_date(client):
     )
 
     response = client.post(
-        "/tasks/create/",
+        reverse("create_task"),
         {
             "title": "Task Without Due Date",
             "description": "No deadline",
@@ -151,7 +158,12 @@ def test_logged_user_can_view_task_details(client):
 
     assert login_successful is True
 
-    response = client.get(f"/tasks/{task.id}/")
+    response = client.get(
+        reverse(
+            "task_detail",
+            kwargs={"task_id": task.id},
+        )
+    )
 
     assert response.status_code == 200
     assert b"Detailed Task" in response.content
@@ -181,7 +193,12 @@ def test_logged_user_can_open_edit_task_page(client):
 
     assert login_successful is True
 
-    response = client.get(f"/tasks/{task.id}/edit/")
+    response = client.get(
+        reverse(
+            "edit_task",
+            kwargs={"task_id": task.id},
+        )
+    )
 
     assert response.status_code == 200
     assert b"Edit Task" in response.content
@@ -211,7 +228,10 @@ def test_logged_user_can_update_task(client):
     assert login_successful is True
 
     response = client.post(
-        f"/tasks/{task.id}/edit/",
+        reverse(
+            "edit_task",
+            kwargs={"task_id": task.id},
+        ),
         {
             "title": "Updated Task Title",
             "description": "Updated description",
@@ -252,7 +272,10 @@ def test_logged_user_can_delete_task(client):
     assert Task.objects.count() == 1
 
     response = client.post(
-        f"/tasks/{task.id}/delete/"
+        reverse(
+            "delete_task",
+            kwargs={"task_id": task.id},
+        )
     )
 
     assert response.status_code == 302

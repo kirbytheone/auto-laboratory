@@ -137,27 +137,3 @@ def test_task_attachment_cascade_deletion():
     assert Attachment.objects.count() == 1
     task.delete()
     assert Attachment.objects.count() == 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

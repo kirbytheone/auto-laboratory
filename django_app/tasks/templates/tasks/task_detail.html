@@ -31,11 +31,9 @@
 
     <h3>Add Comment</h3>
 
-    <form method="post">
+    <form method="post" action="{% url 'add_comment' task.pk %}">
         {% csrf_token %}
-
-        <textarea name="text" placeholder="Write a comment" required></textarea>
-        <br><br>
+        {{ comment_form.as_p }}
 
         <button type="submit">Add Comment</button>
     </form>
@@ -59,14 +57,15 @@
 
     <h3>Add Attachment</h3>
 
-    <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+    <form method="post"
+          action="{% url 'upload_attachment' task.pk %}"
+          enctype="multipart/form-data">
 
-    <input type="file" name="file">
-    <br><br>
+        {% csrf_token %}
+        {{ attachment_form.as_p }}
 
-    <button type="submit">Upload Attachment</button>
-</form>
+        <button type="submit">Upload Attachment</button>
+    </form>
 
     <a href="{% url 'edit_task' task.id %}">Edit Task</a>
     <br>

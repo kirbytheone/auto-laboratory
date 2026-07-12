@@ -3,9 +3,10 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from tasks.models import Task, Comment, Attachment
-from .forms import TaskForm
+from .forms import TaskForm, CommentForm, AttachmentForm
 
 
 @login_required
@@ -51,21 +52,6 @@ def create_task(request):
         "tasks/create_task.html",
         {"form": form},
     )
-    # if request.method == "POST":
-    #     title = request.POST.get('title')
-    #     description = request.POST.get('description')
-    #     priority = request.POST.get('priority')
-    #     due_date = request.POST.get("due_date") or None
-    #
-    #     Task.objects.create(
-    #         title=title,
-    #         description=description,
-    #         priority=priority,
-    #         owner=request.user,
-    #         due_date=due_date,
-    #     )
-    #     return redirect("task_list")
-    # return render(request, "tasks/create_task.html")
 
 @login_required
 def edit_task(request, task_id):
@@ -93,19 +79,6 @@ def edit_task(request, task_id):
             "task": task
         },
     )
-    # task = get_object_or_404(Task, id=task_id, owner=request.user)
-    #
-    # if request.method == "POST":
-    #     task.title = request.POST.get("title")
-    #     task.description = request.POST.get("description")
-    #     task.status = request.POST.get("status")
-    #     task.priority = request.POST.get("priority")
-    #     task.due_date = request.POST.get("due_date") or None
-    #     task.save()
-    #
-    #     return redirect("task_detail", task_id=task_id)
-    #
-    # return render(request, "tasks/edit_task.html", {"task": task})
 
 @login_required
 def delete_task(request, task_id):
@@ -133,26 +106,6 @@ def task_detail(request, task_id):
         owner=request.user,
     )
 
-    if request.method == "POST":
-        text = request.POST.get("text")
-        uploaded_file = request.FILES.get("file")
-
-        if text:
-            Comment.objects.create(
-                task=task,
-                author=request.user,
-                text=text,
-            )
-
-        if uploaded_file:
-            Attachment.objects.create(
-                task=task,
-                uploaded_by=request.user,
-                file=uploaded_file,
-            )
-
-        return redirect("task_detail", task_id=task.id)
-
     comments = task.comments.order_by("-created_at")
     attachments = task.attachments.order_by("-created_at")
 
@@ -163,5 +116,43 @@ def task_detail(request, task_id):
             'task': task,
             'comments': comments,
             'attachments': attachments,
+            'comment_form': CommentForm(),
+            'attachment_form': AttachmentForm(),
         },
     )
+
+@login_required
+@require_POST
+def add_comment(request, task_id):
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        owner=request.user,
+    )
+
+    form = CommentForm(request.POST)
+
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.task = task
+        comment.author = request.user
+        comment.save()
+    return redirect("task_detail", task_id=task.pk)
+
+@login_required
+@require_POST
+def upload_attachment(request, task_id):
+    task = get_object_or_404(
+        Task,
+        id=task_id,
+        owner=request.user,
+    )
+
+    form = AttachmentForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        attachment = form.save(commit=False)
+        attachment.task = task
+        attachment.uploaded_by = request.user
+        attachment.save()
+    return redirect("task_detail", task_id=task.pk)

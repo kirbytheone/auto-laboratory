@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.urls import reverse
 
 from tasks.models import Task, Attachment
 
@@ -30,10 +31,8 @@ def test_logged_user_can_upload_attachment_to_task(client,
     )
 
     response = client.post(
-        f"/tasks/{task.id}/",
-        {
-            "file": uploaded_file,
-        },
+        reverse("upload_attachment", args=[task.pk]),
+        {"file": uploaded_file},
     )
 
     assert response.status_code == 302

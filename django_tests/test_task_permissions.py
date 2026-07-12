@@ -1,5 +1,7 @@
 import pytest
 
+from django.urls import reverse
+
 from tasks.models import Task
 
 
@@ -11,7 +13,12 @@ def test_user_cannot_view_other_user_task_details(client, create_user, create_ta
 
     client.force_login(other_user)
 
-    response = client.get(f"/tasks/{task.id}/")
+    response = client.get(
+        reverse(
+            "task_detail",
+            kwargs={"task_id": task.id},
+        )
+    )
 
     assert response.status_code == 404
 
@@ -24,12 +31,15 @@ def test_user_cannot_edit_other_users_task_details(client, create_user, create_t
     client.force_login(other_user)
 
     response = client.post(
-        f"/tasks/{task.id}/edit/",
+        reverse(
+            "edit_task",
+            kwargs={"task_id": task.id},
+        ),
         {
             "title": "Hacked Task",
             "description": "Unauthorized edit",
-            "ststus": "done",
-            "priority": "high",
+            "status": Task.Status.DONE,
+            "priority": Task.Priority.HIGH,
             "due_date": "",
         },
     )
@@ -45,7 +55,12 @@ def test_user_cannot_delete_others_users_task(client, create_user, create_task):
 
     client.force_login(other_user)
 
-    response = client.post(f"/tasks/{task.id}/delete/")
+    response = client.get(
+        reverse(
+            "delete_task",
+            kwargs={"task_id": task.id},
+        )
+    )
 
     assert response.status_code == 404
     assert Task.objects.filter(id=task.id).exists()

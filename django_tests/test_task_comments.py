@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from django.urls import reverse
 from tasks.models import Task
 
 
@@ -21,10 +22,8 @@ def test_logged_user_can_add_comment_to_task(client):
     )
 
     response = client.post(
-        f"/tasks/{task.id}/",
-        {
-            "text": "Comment from test",
-        },
+        reverse("add_comment", args=[task.pk]),
+        {"text": "Comment from test"},
     )
 
     assert response.status_code == 302

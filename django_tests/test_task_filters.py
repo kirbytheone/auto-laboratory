@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from django.urls import reverse
 from tasks.models import Task
 
 
@@ -27,7 +28,10 @@ def test_task_list_can_filter_by_status(client):
         password="testpass123",
     )
 
-    response = client.get("/tasks/?status=TODO")
+    response = client.get(
+        reverse("task_list"),
+        {"status": Task.Status.TODO},
+    )
 
     assert response.status_code == 200
     assert b"Todo Task" in response.content
@@ -57,7 +61,10 @@ def test_task_list_can_filter_by_priority(client):
         password="testpass123",
     )
 
-    response = client.get("/tasks/?priority=HIGH")
+    response = client.get(
+        reverse("task_list"),
+        {"priority": Task.Priority.HIGH},
+    )
 
     assert response.status_code == 200
     assert b"High Priority Task" in response.content
@@ -96,7 +103,13 @@ def test_task_list_can_filter_by_status_and_priority(client):
         password="testpass123",
     )
 
-    response = client.get("/tasks/?status=TODO&priority=HIGH")
+    response = client.get(
+        reverse("task_list"),
+        {
+            "status": Task.Status.TODO,
+            "priority": Task.Priority.HIGH,
+        },
+    )
 
     assert response.status_code == 200
     assert b"Todo High Priority Task" in response.content
