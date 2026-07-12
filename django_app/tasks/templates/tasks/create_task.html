@@ -1,34 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Task</title>
-</head>
-<body>
-    <h1>Create Task</h1>
+{% extends "base.html" %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+{% block title %}Create Task{% endblock %}
 
-        <input type="text" name="title" placeholder="Title" required>
-        <br><br>
+{% block content %}
 
-        <textarea name="description" placeholder="Description"></textarea>
-        <br><br>
+<h1>Create Task</h1>
 
-        <input type="date" name="due_date">
-        <br><br>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-        <select name="priority">
-            <option value="LOW">Low</option>
-            <option value="MEDIUM">Medium</option>
-            <option value="HIGH">High</option>
-        </select>
+    <button type="submit">Create Task</button>
+</form>
 
-        <br><br>
+<p>
+    <a href="{% url 'task_list' %}">Back to tasks</a>
+</p>
 
-        <button type="submit">Create Task</button>
-    </form>
-</body>
-</html>
+{% endblock %}

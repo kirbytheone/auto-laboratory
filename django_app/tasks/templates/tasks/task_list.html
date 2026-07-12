@@ -1,78 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task List</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-{% if user.is_authenticated %}
-<p>
-    Logged in as <strong>{{ user.username }}</strong>
-</p>
+{% block title %}My Tasks{% endblock %}
 
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-</form>
-{% else %}
-<a href="{% url 'login' %}">Log In</a>
-|
-<a href="{% url 'register' %}">Register</a>
-{% endif %}
-
-<hr>
+{% block content %}
 
 <h1>My Tasks</h1>
-    <a href="{% url 'create_task' %}">Create Task</a>
+
+<a href="{% url 'create_task' %}">Create Task</a>
 
 <br><br>
 
 <form method="get">
-    <label>Status:</label>
-    <select name="status">
+    <label for="status">Status:</label>
+    <select id="status" name="status">
         <option value="">All</option>
 
-        {% if selected_status == "TODO" %}
-            <option value="TODO" selected>To Do</option>
-        {% else %}
-            <option value="TODO">To Do</option>
-        {% endif %}
+        <option value="TODO"
+            {% if selected_status == "TODO" %}selected{% endif %}>
+            To Do
+        </option>
 
-        {% if selected_status == "IN_PROGRESS" %}
-            <option value="IN_PROGRESS" selected>In Progress</option>
-        {% else %}
-            <option value="IN_PROGRESS">In Progress</option>
-        {% endif %}
+        <option value="IN_PROGRESS"
+            {% if selected_status == "IN_PROGRESS" %}selected{% endif %}>
+            In Progress
+        </option>
 
-        {% if selected_status == "DONE" %}
-            <option value="DONE" selected>Done</option>
-        {% else %}
-            <option value="DONE">Done</option>
-        {% endif %}
+        <option value="DONE"
+            {% if selected_status == "DONE" %}selected{% endif %}>
+            Done
+        </option>
     </select>
 
-    <label>Priority:</label>
-    <select name="priority">
+    <label for="priority">Priority:</label>
+    <select id="priority" name="priority">
         <option value="">All</option>
 
-        {% if selected_priority == "LOW" %}
-            <option value="LOW" selected>Low</option>
-        {% else %}
-            <option value="LOW">Low</option>
-        {% endif %}
+        <option value="LOW"
+            {% if selected_priority == "LOW" %}selected{% endif %}>
+            Low
+        </option>
 
-        {% if selected_priority == "MEDIUM" %}
-            <option value="MEDIUM" selected>Medium</option>
-        {% else %}
-            <option value="MEDIUM">Medium</option>
-        {% endif %}
+        <option value="MEDIUM"
+            {% if selected_priority == "MEDIUM" %}selected{% endif %}>
+            Medium
+        </option>
 
-        {% if selected_priority == "HIGH" %}
-            <option value="HIGH" selected>High</option>
-        {% else %}
-            <option value="HIGH">High</option>
-        {% endif %}
+        <option value="HIGH"
+            {% if selected_priority == "HIGH" %}selected{% endif %}>
+            High
+        </option>
     </select>
 
     <button type="submit">Filter</button>
@@ -80,21 +56,21 @@
 
 <br>
 
-    {% if tasks %}
-        <ul>
-            {% for task in tasks %}
-                <li>
-                    <a href="{% url 'task_detail' task.id %}">
-                        {{ task.title }}
-                    </a>
-                    | {{ task.status }}
-                    | {{ task.priority }}
-                    | {{ task.due_date }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No tasks found.</p>
-    {% endif %}
-</body>
-</html>
+{% if tasks %}
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <a href="{% url 'task_detail' task.pk %}">
+                    {{ task.title }}
+                </a>
+                | {{ task.status }}
+                | {{ task.priority }}
+                | {{ task.due_date }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No tasks found.</p>
+{% endif %}
+
+{% endblock %}

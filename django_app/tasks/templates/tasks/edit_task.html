@@ -1,42 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Task</title>
-</head>
-<body>
-    <h1>Edit Task</h1>
+{% extends "base.html" %}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+{% block title %}Edit Task{% endblock %}
 
-        <input type="text" name="title" value="{{ task.title }}" required>
-        <br><br>
+{% block content %}
 
-        <textarea name="description">{{ task.description }}</textarea>
-        <br><br>
+<h1>Edit Task</h1>
 
-        <input type="date" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}">
-        <br><br>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-        <select name="status">
-            <option value="TODO" {% if task.status == "TODO" %}selected{% endif %}>To Do</option>
-            <option value="IN_PROGRESS" {% if task.status == "IN_PROGRESS" %}selected{% endif %}>In Progress</option>
-            <option value="DONE" {% if task.status == "DONE" %}selected{% endif %}>Done</option>
-        </select>
+    <button type="submit">Save Changes</button>
+</form>
 
-        <br><br>
+<p>
+    <a href="{% url 'task_detail' task.pk %}">
+        Back to task
+    </a>
+</p>
 
-        <select name="priority">
-            <option value="LOW" {% if task.priority == "LOW" %}selected{% endif %}>Low</option>
-            <option value="MEDIUM" {% if task.priority == "MEDIUM" %}selected{% endif %}>Medium</option>
-            <option value="HIGH" {% if task.priority == "HIGH" %}selected{% endif %}>High</option>
-        </select>
-
-        <br><br>
-
-        <button type="submit">Save Task</button>
-    </form>
-</body>
-</html>
+{% endblock %}

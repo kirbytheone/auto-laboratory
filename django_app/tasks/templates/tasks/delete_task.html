@@ -1,19 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Delete Task</title>
-</head>
-<body>
-    <h1>Delete Task</h1>
+{% extends "base.html" %}
 
-    <p>Are you sure you want to delete "{{ task.title }}"?</p>
+{% block title %}Delete Task{% endblock %}
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
+{% block content %}
 
-    <a href="{% url 'task_detail' task.id %}">Cancel</a>
-</body>
-</html>
+<h1>Delete Task</h1>
+
+<p>
+    Are you sure you want to delete
+    "<strong>{{ task.title }}</strong>"?
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <button type="submit">
+        Delete
+    </button>
+</form>
+
+<p>
+    <a href="{% url 'task_detail' task.pk %}">
+        Cancel
+    </a>
+</p>
+
+{% endblock %}
