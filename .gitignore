@@ -10,3 +10,4 @@ htmlcov/
 playwright_tests/auth/*.json
 django_app/media/
 reports/
+*.sqlite3
