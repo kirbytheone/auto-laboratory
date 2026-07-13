@@ -1,6 +1,9 @@
 import pytest
+
 from django.contrib.auth.models import User
 from django.test import override_settings
+
+from rest_framework.test import APIClient
 
 from tasks.models import Task
 
@@ -46,3 +49,7 @@ def create_task():
             due_date=due_date,
         )
     return _create_task
+
+@pytest.fixture
+def api_client():
+    return APIClient()
