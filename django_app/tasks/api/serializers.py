@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tasks.models import Comment, Task
+from tasks.models import Attachment, Comment, Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -34,5 +34,29 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'id',
             'author',
+            'created_at',
+        ]
+
+class AttachmentSerializer(serializers.ModelSerializer):
+    uploaded_by = serializers.CharField(
+        source='uploaded_by.username',
+        read_only=True,
+    )
+
+    class Meta:
+        model = Attachment
+
+        fields = [
+            'id',
+            'filename',
+            'file',
+            'uploaded_by',
+            'created_at',
+        ]
+
+        read_only_fields = [
+            'id',
+            'filename',
+            'uploaded_by',
             'created_at',
         ]

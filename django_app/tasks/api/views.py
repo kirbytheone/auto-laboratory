@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import get_object_or_404
 
-from tasks.models import Task
+from tasks.models import Attachment, Task
 
-from .serializers import CommentSerializer, TaskSerializer
+from .serializers import AttachmentSerializer, CommentSerializer, TaskSerializer
 
 
 class TaskListAPIView(ListCreateAPIView):
@@ -45,6 +45,26 @@ class CommentListCreateAPIView(ListCreateAPIView):
         serializer.save(
             task=self.get_task(),
             author=self.request.user,
+        )
+
+class AttachmentListCreateAPIView(ListCreateAPIView):
+    serializer_class = AttachmentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_task(self):
+        return get_object_or_404(
+            Task,
+            pk=self.kwargs['task_pk'],
+            owner=self.request.user,
+        )
+
+    def get_queryset(self):
+        return self.get_task().attachments.order_by('-created_at')
+
+    def perform_create(self, serializer):
+        serializer.save(
+            task=self.get_task(),
+            uploaded_by=self.request.user,
         )
 
 
