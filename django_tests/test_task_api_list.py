@@ -24,9 +24,10 @@ def test_auth_user_can_list_own_tasks_api(api_client, create_user, create_task):
     response = api_client.get(reverse("api-task-list"))
 
     assert response.status_code == 200
-    assert len(response.data) == 1
-    assert response.data[0]['id'] == user_task.id
-    assert response.data[0]['title'] == 'User API task'
+    assert response.data['count'] == 1
+    assert len(response.data['results']) == 1
+    assert response.data['results'][0]['id'] == user_task.id
+    assert response.data['results'][0]['title'] == 'User API task'
 
 @pytest.mark.django_db
 def test_auth_user_can_create_task(api_client, create_user):

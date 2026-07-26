@@ -1,5 +1,6 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
 
 from django.shortcuts import get_object_or_404
 
@@ -12,8 +13,35 @@ class TaskListAPIView(ListCreateAPIView):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
 
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    search_fields = [
+        'title',
+        'description',
+    ]
+
+    ordering_fields = [
+        'title',
+        'created_at',
+        'due_date',
+    ]
+    ordering = ['id']
+
     def get_queryset(self):
-        return Task.objects.filter(owner=self.request.user)
+        query_set = Task.objects.filter(owner=self.request.user)
+
+        status = self.request.query_params.get('status')
+        priority = self.request.query_params.get('priority')
+
+        if status:
+            query_set = query_set.filter(status=status)
+        if priority:
+            query_set = query_set.filter(priority=priority)
+
+        return query_set
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

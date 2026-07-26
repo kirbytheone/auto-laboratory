@@ -38,10 +38,11 @@ def test_auth_user_can_list_attachments_for_own_task(
     )
 
     assert response.status_code == 200
-    assert len(response.data) == 1
-    assert response.data[0]['id'] == attachment.pk
-    assert response.data[0]['filename'] == 'existing_file.txt'
-    assert response.data[0]['uploaded_by'] == user.username
+    assert response.data['count'] == 1
+    assert len(response.data['results']) == 1
+    assert response.data['results'][0]['id'] == attachment.pk
+    assert response.data['results'][0]['filename'] == 'existing_file.txt'
+    assert response.data['results'][0]['uploaded_by'] == user.username
 
 @pytest.mark.django_db
 def test_auth_user_can_upload_attachment_to_own_task(
