@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'tasks',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': (
         'rest_framework.pagination.PageNumberPagination'),
     'PAGE_SIZE': 3,
+    'DEFAULT_SCHEMA_CLASS': (
+        'drf_spectacular.openapi.AutoSchema'),
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -108,6 +111,15 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Automation Laboratory API',
+    'DESCRIPTION': (
+        'REST API for managing tasks, comments and attachments.'
+    ),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
