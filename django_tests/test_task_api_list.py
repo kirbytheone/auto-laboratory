@@ -9,7 +9,7 @@ from tasks.models import Comment, Task
 def test_anonymous_user_cannot_access_task_api(api_client):
     response = api_client.get(reverse("api-task-list"))
 
-    assert response.status_code == 403
+    assert response.status_code == 401
 
 @pytest.mark.django_db
 def test_auth_user_can_list_own_tasks_api(api_client, create_user, create_task):

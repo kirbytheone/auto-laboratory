@@ -1,8 +1,11 @@
 from django.urls import path
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 from .views import CommentListCreateAPIView, TaskListAPIView, TaskDetailAPIView, AttachmentListCreateAPIView
 
 urlpatterns = [
+    path('token/', obtain_auth_token, name='api-token'),
     path('tasks/', TaskListAPIView.as_view(), name='api-task-list'),
     path('tasks/<int:pk>/', TaskDetailAPIView.as_view(), name='api-task-detail'),
     path('tasks/<int:task_pk>/comments/', CommentListCreateAPIView.as_view(), name='api-task-comment-list'),
