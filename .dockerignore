@@ -1,0 +1,16 @@
+.venv/
+.git/
+.idea/
+__pycache__/
+.pytest_cache/
+/django_app/media/
+/django_app/db.sqlite3
+/reports/
+/playwright-report/
+/playwright_downloads/
+playwright_tests/auth/*.json
+/screenshots/
+/selenium_tests/test_data/
+htmlcov/
+*.pyc
+.env
