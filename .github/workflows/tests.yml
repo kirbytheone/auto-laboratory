@@ -1,0 +1,38 @@
+name: Python Django app API Test
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  django-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Django API tests
+        env:
+          DJANGO_SECRET_KEY: github-actions-test-secret
+          DJANGO_ALLOWED_HOSTS: 127.0.0.1,localhost
+        run: pytest -q django_tests
