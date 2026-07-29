@@ -7,6 +7,8 @@ __pycache__/
 .env
 htmlcov/
 .coverage
+playwright-report/
+playwright_downloads/
 playwright_tests/auth/*.json
 django_app/media/
 reports/
