@@ -1,4 +1,4 @@
-from playwright_tests.tests.test_file_upload import PROJECT_ROOT_PATH
+from playwright_tests.tests.practice.test_file_upload import PROJECT_ROOT_PATH
 
 DOWNLOADS_DIR_PATH = PROJECT_ROOT_PATH / "playwright_downloads"
 

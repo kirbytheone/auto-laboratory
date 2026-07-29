@@ -1,8 +1,8 @@
 from pathlib import Path
 
 
-PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent
-TEST_FILE_PATH = PROJECT_ROOT_PATH / 'selenium_tests' / 'test_data' / 'sample.txt'
+PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent.parent
+TEST_FILE_PATH = PROJECT_ROOT_PATH / 'playwright_downloads' / 'upload_file.txt'
 
 
 def test_file_upload(page):
@@ -12,4 +12,4 @@ def test_file_upload(page):
     page.click("#file-submit")
     uploaded_file_name = page.locator('#uploaded-files').inner_text().strip()
 
-    assert uploaded_file_name == "sample.txt"
+    assert uploaded_file_name == "upload_file.txt"

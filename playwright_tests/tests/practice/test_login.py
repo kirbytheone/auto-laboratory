@@ -2,7 +2,7 @@ import pytest
 
 from playwright.sync_api import expect
 
-from playwright_tests.pages.login_page import LoginPage
+from playwright_tests.pages.practice.login_page import LoginPage
 
 
 @pytest.mark.parametrize(

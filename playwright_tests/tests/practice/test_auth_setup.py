@@ -1,8 +1,8 @@
 from pathlib import Path
-from playwright_tests.pages.login_page import LoginPage
+from playwright_tests.pages.practice.login_page import LoginPage
 
 
-AUTH_STATE_PATH = Path(__file__).resolve().parent.parent / 'auth' / 'auth_state.json'
+AUTH_STATE_PATH = Path(__file__).resolve().parent.parent.parent / 'auth' / 'auth_state.json'
 
 def test_save_auth_state(browser):
     context = browser.new_context()

@@ -1,4 +1,4 @@
-from playwright_tests.pages.base_page import BasePage
+from playwright_tests.base_page import BasePage
 
 
 class LoginPage(BasePage):

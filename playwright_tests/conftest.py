@@ -1,18 +1,18 @@
 import pytest
-from playwright.sync_api import sync_playwright
+# from playwright.sync_api import sync_playwright
 from pathlib import Path
 
 PLAYWRIGHT_REPORTS_DIR = Path(__file__).resolve().parent.parent / "playwright-report"
 
 
-@pytest.fixture
-def browser():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
-
-        yield browser
-
-        browser.close()
+# @pytest.fixture
+# def browser():
+#     with sync_playwright() as playwright:
+#         browser = playwright.chromium.launch(headless=False)
+#
+#         yield browser
+#
+#         browser.close()
 
 @pytest.fixture
 def page(browser, request):
