@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.practice
 def test_verify_request_url(page):
     with page.expect_request("**/posts/1") as request_info:
         page.goto("https://jsonplaceholder.typicode.com/posts/1")

@@ -1,10 +1,12 @@
-from pathlib import Path
+import pytest
+
+from playwright_tests.config.settings import PRACTICE_DATA_DIR
 
 
-PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent.parent
-TEST_FILE_PATH = PROJECT_ROOT_PATH / 'playwright_downloads' / 'upload_file.txt'
+TEST_FILE_PATH = PRACTICE_DATA_DIR / 'upload_file.txt'
 
 
+@pytest.mark.practice
 def test_file_upload(page):
     page.goto("https://the-internet.herokuapp.com/upload")
 

@@ -1,9 +1,12 @@
+import pytest
+
 from pathlib import Path
 from playwright_tests.pages.practice.login_page import LoginPage
 
 
 AUTH_STATE_PATH = Path(__file__).resolve().parent.parent.parent / 'auth' / 'auth_state.json'
 
+@pytest.mark.practice
 def test_save_auth_state(browser):
     context = browser.new_context()
     page = context.new_page()

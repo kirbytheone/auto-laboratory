@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.practice
 def test_api_get_request(playwright):
     request_context = playwright.request.new_context()
 

@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.practice
 def test__multiple_contexts(browser):
     context_1 = browser.new_context()
     context_2 = browser.new_context()

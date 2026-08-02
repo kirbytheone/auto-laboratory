@@ -1,6 +1,9 @@
+import pytest
+
 from playwright.sync_api import expect
 
 
+@pytest.mark.practice
 def test_mock_page(page):
     page.route(
         "https://jsonplaceholder.typicode.com/posts/1",

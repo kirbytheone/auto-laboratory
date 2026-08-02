@@ -5,6 +5,7 @@ from playwright.sync_api import expect
 from playwright_tests.pages.practice.login_page import LoginPage
 
 
+@pytest.mark.practice
 @pytest.mark.parametrize(
     "username, password, expected_message",
     [
