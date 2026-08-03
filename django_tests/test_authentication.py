@@ -10,6 +10,7 @@ def test_user_can_register(client):
         reverse("register"),
         {
             "username": "newuser",
+            "email": "newuser@example.com",
             "password1": "StrongPass123!",
             "password2": "StrongPass123!",
         },
@@ -17,6 +18,15 @@ def test_user_can_register(client):
 
     assert response.status_code == 302
     assert User.objects.filter(username="newuser").exists()
+
+    user = User.objects.get(username="newuser")
+
+    assert user.email == "newuser@example.com"
+    assert user.is_authenticated
+
+    response = client.get(reverse("task_list"))
+
+    assert response.context["user"].is_authenticated
 
 @pytest.mark.django_db
 def test_registered_password_is_hashed(client):
@@ -26,6 +36,7 @@ def test_registered_password_is_hashed(client):
         reverse("register"),
         {
             "username": "secureuser",
+            "email": "secureuser@example.com",
             "password1": raw_password,
             "password2": raw_password,
         },
