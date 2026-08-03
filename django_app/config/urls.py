@@ -19,9 +19,11 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
+    path('accounts/', include('accounts.urls')),
     path("tasks/", include("tasks.urls")),
     path("api/", include("tasks.api.urls")),
     path("api-auth/", include("rest_framework.urls")),

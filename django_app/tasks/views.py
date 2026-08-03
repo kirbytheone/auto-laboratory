@@ -1,12 +1,7 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.contrib.auth import login
 
-from tasks.models import Task, Comment, Attachment
 from .forms import *
 
 
@@ -157,45 +152,3 @@ def upload_attachment(request, task_id):
         attachment.uploaded_by = request.user
         attachment.save()
     return redirect("task_detail", task_id=task.pk)
-
-def register(request):
-    if request.user.is_authenticated:
-        return redirect("task_list")
-
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-
-            return redirect("task_list")
-        else:
-            form = RegisterForm()
-
-        return render(
-            request,
-            "registration/register.html",
-            {"form": form},
-        )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
