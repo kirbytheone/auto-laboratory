@@ -168,3 +168,12 @@ For each pull request:
 10. Evaluate and address justified findings.
 11. Merge into `main`.
 12. Delete the completed feature branch.
+
+## Account identity rules
+
+- Username is required and unique.
+- Email is required.
+- Email is normalized before persistence.
+- Email uniqueness is case-insensitive.
+- The current form-level uniqueness validation will later be reinforced with 
+- a database constraint through a custom user model.

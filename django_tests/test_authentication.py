@@ -78,3 +78,45 @@ def test_user_can_logout(client):
 
     assert response.status_code == 302
     assert "_auth_user_id" not in client.session
+
+@pytest.mark.django_db
+def test_registration_rejects_duplicate_email_case_sense(client):
+    User.objects.create_user(
+        username="existing_user",
+        email="existing@example.com",
+        password="StrongPass123!",
+    )
+
+    response = client.post(
+        reverse("register"),
+        {
+            "username": "new_user",
+            "email": "EXISTING@EXAMPLE.COM",
+            "password1": "StrongPass123!",
+            "password2": "StrongPass123!",
+        },
+    )
+
+    assert response.status_code == 200
+    assert not User.objects.filter(username="new_user").exists()
+    assert (
+            'An account with this email already exists.'
+            in response.content.decode()
+    )
+
+@pytest.mark.django_db
+def test_registration_normalizes_email_before_saving(client):
+    response = client.post(
+        reverse("register"),
+        {
+            'username': 'normalized_user',
+            'email': 'Normalized@Example.COM  ',
+            'password1': 'StrongPass123!',
+            'password2': 'StrongPass123!',
+        },
+    )
+    assert response.status_code == 302
+
+    user = User.objects.get(username="normalized_user")
+
+    assert user.email == 'normalized@example.com'

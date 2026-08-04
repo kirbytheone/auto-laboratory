@@ -21,10 +21,12 @@ def test_successful_registration(page):
         password_confirmation=user.password,
     )
 
-    expect(page).to_have_url(f'{BASE_URL}/tasks/')
-    expect(page.get_by_role('heading', name='My Tasks')).to_be_visible()
-    expect(page.get_by_text(f'Logged in as {user.username}')).to_be_visible()
-    expect(page.get_by_role('button', name='Log Out')).to_be_visible()
+    task_list_page = DjangoTaskListPage(page, BASE_URL)
+
+    expect(page).to_have_url(f'{BASE_URL}{DjangoTaskListPage.PATH}')
+    expect(task_list_page.heading).to_be_visible()
+    expect(task_list_page.logged_in_as(user.username)).to_be_visible()
+    expect(task_list_page.logout_button).to_be_visible()
 
 @pytest.mark.django_app
 def test_registration_with_password_mismatch(page):
