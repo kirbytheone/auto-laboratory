@@ -1,18 +1,24 @@
 import pytest
-from playwright.sync_api import sync_playwright
+
 from pathlib import Path
 
-PLAYWRIGHT_REPORTS_DIR = Path(__file__).resolve().parent.parent / "playwright-report"
+from playwright_tests.config.settings import TEST_ARTIFACTS
 
 
-@pytest.fixture
-def browser():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
+def get_test_type(request: pytest.FixtureRequest) -> str:
+    if request.node.get_closest_marker("django_app"):
+        return 'django_app'
+    if request.node.get_closest_marker('practice'):
+        return 'practice'
+    raise RuntimeError(
+        f'Playwright test "{request.node.nodeid}" must have either '
+        f'"practice" or "django_app" marker!'
+    )
 
-        yield browser
+def get_test_artifacts(request: pytest.FixtureRequest) -> dict[str, Path]:
+    test_type = get_test_type(request)
+    return TEST_ARTIFACTS[test_type]
 
-        browser.close()
 
 @pytest.fixture
 def page(browser, request):
@@ -28,9 +34,10 @@ def page(browser, request):
 
     yield page
 
-    if request.node.report_call.failed:
-        traceback_path = PLAYWRIGHT_REPORTS_DIR / f'{request.node.name}.zip'
+    artifacts = get_test_artifacts(request)
 
+    if request.node.report_call.failed:
+        traceback_path = artifacts['reports'] / f'{request.node.name}.zip'
         context.tracing.stop(path=str(traceback_path))
     else:
         context.tracing.stop()

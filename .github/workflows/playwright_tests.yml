@@ -1,0 +1,111 @@
+name: Playwright Django Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  playwright-django-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DEBUG: "False"
+      PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
+      PLAYWRIGHT_TEST_USERNAME: playwright_ci_user
+      PLAYWRIGHT_TEST_PASSWORD: StrongCiPassword123!
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Chromium and system dependencies
+        run: |
+          python -m playwright install --with-deps chromium
+
+      - name: Apply Django migration
+        run: |
+          python django_app/manage.py migrate
+
+      - name: Create deterministic Playwright user
+        run: |
+          python django_app/manage.py shell <<'PY'
+          import os
+          from django.contrib.auth import get_user_model
+          
+          User = get_user_model()
+          username = os.environ["PLAYWRIGHT_TEST_USERNAME"]
+          password = os.environ["PLAYWRIGHT_TEST_PASSWORD"]
+          
+          user, _ = User.objects.get_or_create(
+            username=username,
+            defaults={
+              "email": "playwright-ci@example.com"
+            },
+          )
+          
+          user.set_password(password)
+          user.is_active = True
+          user.save()
+          PY
+
+      - name: Start Django server
+        run: |
+          python django_app/manage.py runserver 127.0.0.1:8000 \
+            > django-server.log 2>&1 &
+          echo $! > django-server.pid
+
+      - name: Wait for Django starts
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent \
+              http://127.0.0.1:8000/accounts/login/ \
+              > /dev/null; then
+              echo "Django server is ready"
+              exit 0
+            fi
+          
+            sleep 1
+          done
+        
+          echo "Django server failed to start"
+          cat django-server.log
+          exit 1
+
+      - name: Run Django Playwright tests
+        run: |
+          pytest -q \
+            -m django_app \
+            playwright_tests/tests/django_app \
+            --tracing=retain-on-failure
+
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: tests-results/
+          retention-days: 7
+
+      - name: Upload Django server log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: django-server-log
+          path: django-server.log
+          retention-days: 7

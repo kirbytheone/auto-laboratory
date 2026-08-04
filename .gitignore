@@ -8,8 +8,9 @@ __pycache__/
 htmlcov/
 .coverage
 playwright-report/
-playwright_downloads/
-playwright_tests/auth/*.json
+playwright-downloads/
+playwright-tests/auth/*.json
 django_app/media/
+screenshots/
 reports/
 *.sqlite3
