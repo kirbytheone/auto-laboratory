@@ -126,6 +126,7 @@ def test_user_can_create_task_with_no_due_date(client):
             "status": Task.Status.TODO,
             "priority": Task.Priority.MEDIUM,
             "due_date": "",
+            "owner": user,
         },
     )
 
