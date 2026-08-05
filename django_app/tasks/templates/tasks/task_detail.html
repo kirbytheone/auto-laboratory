@@ -4,82 +4,99 @@
 
 {% block content %}
 
-<h1>{{ task.title }}</h1>
+<article class="task-detail">
 
-<p>Description: {{ task.description }}</p>
-<p>Status: {{ task.status }}</p>
-<p>Priority: {{ task.priority }}</p>
-<p>Due Date: {{ task.due_date }}</p>
-<p>Owner: {{ task.owner.username }}</p>
+    <header class="task-detail-header">
+        <h1>{{ task.title }}</h1>
 
-<h2>Comments</h2>
+        <div class="task-actions">
+            <a href="{% url 'edit_task' task.pk %}" class="button-link">
+                Edit Task
+            </a>
 
-{% if comments %}
-    <ul>
-        {% for comment in comments %}
-            <li>
-                <strong>{{ comment.author.username }}</strong>:
-                {{ comment.text }}
-                <br>
-                <small>{{ comment.created_at }}</small>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No comments yet.</p>
-{% endif %}
+            <a href="{% url 'delete_task' task.pk %}" class="button-link button-danger">
+                Delete Task
+            </a>
+        </div>
+    </header>
 
-<h3>Add Comment</h3>
+    <section class="panel">
+        <h2>Task Information</h2>
 
-<form method="post" action="{% url 'add_comment' task.pk %}">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Add Comment</button>
-</form>
+        <p><strong>Description:</strong> {{ task.description }}</p>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Priority:</strong> {{ task.priority }}</p>
+        <p><strong>Due date:</strong> {{ task.due_date }}</p>
+        <p><strong>Owner:</strong> {{ task.owner.username }}</p>
+    </section>
 
-<h2>Attachments</h2>
+    <section class="panel">
+        <h2>Comments</h2>
 
-{% if attachments %}
-    <ul>
-        {% for attachment in attachments %}
-            <li>
-                <a href="{{ attachment.file.url }}">
-                    {{ attachment.filename }}
-                </a>
-                <br>
-                <small>
-                    Uploaded by {{ attachment.uploaded_by.username }}
-                    at {{ attachment.created_at }}
-                </small>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No attachments yet.</p>
-{% endif %}
+        {% if comments %}
+            <ul class="comment-list">
+                {% for comment in comments %}
+                    <li class="comment-card">
+                        <strong>{{ comment.author.username }}</strong>
+                        <p>{{ comment.text }}</p>
+                        <small>{{ comment.created_at }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
 
-<h3>Add Attachment</h3>
+        <h3>Add Comment</h3>
 
-<form
-    method="post"
-    action="{% url 'upload_attachment' task.pk %}"
-    enctype="multipart/form-data"
->
-    {% csrf_token %}
-    {{ attachment_form.as_p }}
-    <button type="submit">Upload Attachment</button>
-</form>
+        <form method="post" action="{% url 'add_comment' task.pk %}">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
 
-<p>
-    <a href="{% url 'edit_task' task.pk %}">Edit Task</a>
-</p>
+            <button type="submit">Add Comment</button>
+        </form>
+    </section>
 
-<p>
-    <a href="{% url 'delete_task' task.pk %}">Delete Task</a>
-</p>
+    <section class="panel">
+        <h2>Attachments</h2>
 
-<p>
-    <a href="{% url 'task_list' %}">Back to tasks</a>
-</p>
+        {% if attachments %}
+            <ul class="attachment-list">
+                {% for attachment in attachments %}
+                    <li>
+                        <a href="{{ attachment.file.url }}">
+                            {{ attachment.file.name }}
+                        </a>
+
+                        <small>
+                            Uploaded by {{ attachment.uploaded_by.username }}
+                            at {{ attachment.created_at }}
+                        </small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No attachments yet.</p>
+        {% endif %}
+
+        <h3>Add Attachment</h3>
+
+        <form
+            method="post"
+            action="{% url 'upload_attachment' task.pk %}"
+            enctype="multipart/form-data"
+        >
+            {% csrf_token %}
+            {{ attachment_form.as_p }}
+
+            <button type="submit">Upload Attachment</button>
+        </form>
+    </section>
+
+    <a href="{% url 'task_list' %}" class="back-link">
+        Back to tasks
+    </a>
+
+</article>
 
 {% endblock %}

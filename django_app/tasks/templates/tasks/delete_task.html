@@ -4,25 +4,34 @@
 
 {% block content %}
 
-<h1>Delete Task</h1>
+<section class="form-page">
+    <div class="form-panel delete-panel">
+        <h1>Delete Task</h1>
 
-<p>
-    Are you sure you want to delete
-    "<strong>{{ task.title }}</strong>"?
-</p>
+        <p>
+            Are you sure you want to delete
+            <strong>{{ task.title }}</strong>?
+        </p>
 
-<form method="post">
-    {% csrf_token %}
+        <p>This action cannot be undone.</p>
 
-    <button type="submit">
-        Delete
-    </button>
-</form>
+        <form method="post">
+            {% csrf_token %}
 
-<p>
-    <a href="{% url 'task_detail' task.pk %}">
-        Cancel
-    </a>
-</p>
+            <div class="form-actions">
+                <button type="submit" class="button-danger">
+                    Delete Task
+                </button>
+
+                <a
+                    href="{% url 'task_detail' task.pk %}"
+                    class="button-link button-secondary"
+                >
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
 
 {% endblock %}
