@@ -2,8 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
-
-from tasks.models import Task, Attachment
+from tasks.models import Attachment, Task
 
 
 @pytest.mark.django_db

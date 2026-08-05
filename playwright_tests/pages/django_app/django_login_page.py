@@ -3,7 +3,6 @@ from playwright.sync_api import Page
 from playwright_tests.pages.django_app.django_base_page import DjangoBasePage
 
 
-
 class DjangoLoginPage(DjangoBasePage):
     PATH = '/accounts/login/'
 

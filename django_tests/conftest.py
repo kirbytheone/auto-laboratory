@@ -1,10 +1,7 @@
 import pytest
-
 from django.contrib.auth.models import User
 from django.test import override_settings
-
 from rest_framework.test import APIClient
-
 from tasks.models import Task
 
 

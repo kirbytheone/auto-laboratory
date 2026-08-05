@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Attachment, Comment, Task
 
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task

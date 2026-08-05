@@ -2,6 +2,7 @@ from jsonschema import validate
 
 from api_tests.schemas.post_schema import POST_SCHEMA
 
+
 def validate_status_code(response, expected_status_code: int):
     actual_status_code = response.status_code
 

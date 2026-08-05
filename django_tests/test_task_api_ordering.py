@@ -1,5 +1,4 @@
 import pytest
-
 from django.urls import reverse
 
 
@@ -85,27 +84,3 @@ def test_task_api_orders_filtered_results(api_client, create_user, create_task):
     returned_titles = [ task['title'] for task in response.data['results'] ]
 
     assert returned_titles == ['Alpha Todo Task', 'Zulu Todo Task']
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

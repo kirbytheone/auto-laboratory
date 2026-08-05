@@ -1,8 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-
-from tasks.models import Task, Comment, Attachment
+from tasks.models import Attachment, Comment, Task
 
 
 @pytest.mark.django_db

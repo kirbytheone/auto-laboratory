@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 
 from selenium_tests.pages.base_page import BasePage
 
+
 class DuckDuckPage(BasePage):
 
     URL = "https://duckduckgo.com"

@@ -1,8 +1,6 @@
 import pytest
-
 from django.urls import reverse
-
-from tasks.models import Comment, Task
+from tasks.models import Task
 
 
 @pytest.mark.django_db

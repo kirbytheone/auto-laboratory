@@ -1,5 +1,7 @@
 from django.contrib import admin
-from tasks.models import Task, Comment, Attachment
+
+from tasks.models import Attachment, Comment, Task
+
 
 # Register your models here.
 @admin.register(Task)

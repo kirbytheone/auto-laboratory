@@ -1,7 +1,12 @@
 import pytest
 
-from api_tests.validators import *
 from api_tests.data.post_payloads import get_create_post_payload
+from api_tests.validators import (
+    validate_post_schema,
+    validate_response_field,
+    validate_status_code,
+)
+
 
 @pytest.mark.parametrize("post_id", [1, 2, 3])
 def test_get_post_by_id(json_placeholder_client, post_id):

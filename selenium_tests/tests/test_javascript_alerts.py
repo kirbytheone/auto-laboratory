@@ -1,5 +1,6 @@
 from selenium_tests.pages.javascript_alerts_page import JavascriptAlertsPage
 
+
 def test_accept_javascript_alert(driver):
     page = JavascriptAlertsPage(driver)
     page.open_page()

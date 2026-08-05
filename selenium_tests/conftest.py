@@ -4,7 +4,6 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-
 SCREENSHOTS_DIR = Path(__file__).resolve().parent.parent / "screenshots"
 
 @pytest.fixture

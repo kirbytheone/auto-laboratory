@@ -1,5 +1,4 @@
 import pytest
-
 from playwright.sync_api import expect
 
 from playwright_tests.pages.practice.login_page import LoginPage
@@ -20,4 +19,3 @@ def test_invalid_login(page, username, password, expected_message):
     login_page.login(username, password)
 
     expect(login_page.flash_message()).to_contain_text(expected_message)
-

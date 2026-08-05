@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 
 from selenium_tests.pages.base_page import BasePage
 
