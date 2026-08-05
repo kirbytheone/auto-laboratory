@@ -1,7 +1,12 @@
 import pytest
 
-from api_tests.validators import *
 from api_tests.data.post_payloads import get_create_post_payload
+from api_tests.validators import (
+    validate_post_schema,
+    validate_response_field,
+    validate_status_code,
+)
+
 
 @pytest.mark.parametrize("post_id", [1, 2, 3])
 def test_get_post_by_id(json_placeholder_client, post_id):
@@ -17,6 +22,7 @@ def test_get_post_by_id(json_placeholder_client, post_id):
     9999, # non-existing request ID
 ])
 def test_get_post_invalid_id(json_placeholder_client, post_id):
+    # TODO: Fix test_get_post_invalid_id to use its parametrized post_id value.
     response = json_placeholder_client.get_post(9999)
 
     validate_status_code(response, 404)

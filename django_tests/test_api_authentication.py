@@ -1,5 +1,4 @@
 import pytest
-
 from django.urls import reverse
 
 
@@ -76,7 +75,7 @@ def test_token_allows_access_to_task_api(api_client, create_user, create_task):
 
 @pytest.mark.django_db
 def test_invalid_token_rejected(api_client):
-    api_client.credentials(HTTP_AUTHORIZATION=f'Token invalid-value')
+    api_client.credentials(HTTP_AUTHORIZATION='Token invalid-value')
 
     response = api_client.get(
         reverse('api-task-list')

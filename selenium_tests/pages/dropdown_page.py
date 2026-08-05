@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import Select
 
 from selenium_tests.pages.base_page import BasePage
 
+
 class DropdownPage(BasePage):
 
     URL = 'https://the-internet.herokuapp.com/dropdown'

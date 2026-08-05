@@ -1,11 +1,13 @@
-from django import urls
 from django.urls import path
-
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-
-from .views import CommentListCreateAPIView, TaskListAPIView, TaskDetailAPIView, AttachmentListCreateAPIView
+from .views import (
+    AttachmentListCreateAPIView,
+    CommentListCreateAPIView,
+    TaskDetailAPIView,
+    TaskListAPIView,
+)
 
 urlpatterns = [
     path('schema/', SpectacularAPIView.as_view(), name='api-schema'),

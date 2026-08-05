@@ -1,6 +1,6 @@
-import pytest
-
 from pathlib import Path
+
+import pytest
 
 from playwright_tests.config.settings import TEST_ARTIFACTS
 

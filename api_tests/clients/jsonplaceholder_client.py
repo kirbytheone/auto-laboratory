@@ -1,5 +1,6 @@
 from api_tests.clients.base_client import BaseClient
 
+
 class JsonPlaceholderClient(BaseClient):
 
     def __init__(self):

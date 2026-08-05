@@ -1,12 +1,16 @@
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+    extend_schema_view,
+)
+from rest_framework import filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import filters
 
-from django.shortcuts import get_object_or_404
-
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample, OpenApiResponse
-
-from tasks.models import Attachment, Task
+from tasks.models import Task
 
 from .serializers import AttachmentSerializer, CommentSerializer, TaskSerializer
 
@@ -156,25 +160,3 @@ class AttachmentListCreateAPIView(ListCreateAPIView):
             task=self.get_task(),
             uploaded_by=self.request.user,
         )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

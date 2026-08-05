@@ -1,8 +1,8 @@
+from pathlib import Path
+
 import pytest
 
-from pathlib import Path
 from playwright_tests.pages.practice.login_page import LoginPage
-
 
 AUTH_STATE_PATH = Path(__file__).resolve().parent.parent.parent / 'auth' / 'auth_state.json'
 

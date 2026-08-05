@@ -1,5 +1,6 @@
 import requests
 
+
 class BaseClient:
     def __init__(self, base_url: str):
         self.base_url = base_url
@@ -17,7 +18,7 @@ class BaseClient:
         try:
             print(f'[RESPONSE BODY] {response.json()}')
         except Exception:
-            print(f'[RESPONSE BODY] Not JSON')
+            print('[RESPONSE BODY] Not JSON')
 
         return response
 
