@@ -22,6 +22,7 @@ def test_get_post_by_id(json_placeholder_client, post_id):
     9999, # non-existing request ID
 ])
 def test_get_post_invalid_id(json_placeholder_client, post_id):
+    # TODO: Fix test_get_post_invalid_id to use its parametrized post_id value.
     response = json_placeholder_client.get_post(9999)
 
     validate_status_code(response, 404)
