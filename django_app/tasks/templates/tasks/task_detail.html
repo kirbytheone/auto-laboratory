@@ -4,17 +4,29 @@
 
 {% block content %}
 
-<article class="task-detail">
+<article
+    class="task-detail"
+    data-testid="task-detail"
+    data-task-id="{{ task.pk }}"
+>
 
     <header class="task-detail-header">
         <h1>{{ task.title }}</h1>
 
         <div class="task-actions">
-            <a href="{% url 'edit_task' task.pk %}" class="button-link">
+            <a
+                href="{% url 'edit_task' task.pk %}"
+                class="button-link"
+                data-testid="edit-task"
+            >
                 Edit Task
             </a>
 
-            <a href="{% url 'delete_task' task.pk %}" class="button-link button-danger">
+            <a
+                href="{% url 'delete_task' task.pk %}"
+                class="button-link button-danger"
+                data-testid="delete-task"
+            >
                 Delete Task
             </a>
         </div>
@@ -24,8 +36,21 @@
         <h2>Task Information</h2>
 
         <p><strong>Description:</strong> {{ task.description }}</p>
-        <p><strong>Status:</strong> {{ task.status }}</p>
-        <p><strong>Priority:</strong> {{ task.priority }}</p>
+        <p>
+            <strong>Status:</strong>
+
+            <span class="badge status-{{ task.status|lower }}">
+                {{ task.get_status_display }}
+            </span>
+        </p>
+
+        <p>
+            <strong>Priority:</strong>
+
+            <span class="badge priority-{{ task.priority|lower }}">
+                {{ task.get_priority_display }}
+            </span>
+        </p>
         <p><strong>Due date:</strong> {{ task.due_date }}</p>
         <p><strong>Owner:</strong> {{ task.owner.username }}</p>
     </section>
@@ -36,9 +61,15 @@
         {% if comments %}
             <ul class="comment-list">
                 {% for comment in comments %}
-                    <li class="comment-card">
+                    <li
+                        class="comment-card"
+                        data-testid="comment-card"
+                        data-comment-id="{{ comment.pk }}"
+                    >
                         <strong>{{ comment.author.username }}</strong>
+
                         <p>{{ comment.text }}</p>
+
                         <small>{{ comment.created_at }}</small>
                     </li>
                 {% endfor %}
@@ -49,11 +80,16 @@
 
         <h3>Add Comment</h3>
 
-        <form method="post" action="{% url 'add_comment' task.pk %}">
+        <form
+                method="post"
+                action="{% url 'add_comment' task.pk %}"
+        >
             {% csrf_token %}
             {{ comment_form.as_p }}
 
-            <button type="submit">Add Comment</button>
+            <button type="submit">
+                Add Comment
+            </button>
         </form>
     </section>
 
@@ -63,7 +99,10 @@
         {% if attachments %}
             <ul class="attachment-list">
                 {% for attachment in attachments %}
-                    <li>
+                    <li
+                        data-testid="attachment-item"
+                        data-attachment-id="{{ attachment.pk }}"
+                    >
                         <a href="{{ attachment.file.url }}">
                             {{ attachment.file.name }}
                         </a>
@@ -93,7 +132,11 @@
         </form>
     </section>
 
-    <a href="{% url 'task_list' %}" class="back-link">
+    <a
+        href="{% url 'task_list' %}"
+        class="back-link"
+        data-testid="back-to-tasks"
+    >
         Back to tasks
     </a>
 

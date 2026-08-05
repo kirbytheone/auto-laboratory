@@ -18,7 +18,7 @@ class TaskForm(forms.ModelForm):
             "title": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                "placeholder": "Task title",
+                    "placeholder": "Task title",
                 }
             ),
             "description": forms.Textarea(
@@ -52,10 +52,10 @@ class CommentForm(forms.ModelForm):
         fields = ["text"]
 
         widgets = {
-            "test": forms.Textarea(
+            "text": forms.Textarea(
                 attrs={
                     "class": "form-control",
-                    "rows": 5,
+                    "rows": 3,
                     "placeholder": "Write a comment...",
                 }
             ),
