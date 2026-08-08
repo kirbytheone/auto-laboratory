@@ -349,3 +349,38 @@ button.button-danger:hover {
         text-align: center;
     }
 }
+
+.section-empty {
+    padding: 20px;
+    margin-bottom: 20px;
+
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+
+    text-align: center;
+    color: #666;
+}
+
+.section-empty p {
+    margin: 0;
+}
+
+input[type="file"].form-control {
+    padding: 8px;
+    background: #fff;
+}
+
+input[type="file"].form-control::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    background: #f3f4f6;
+    cursor: pointer;
+}
+
+input[type="file"].form-control::file-selector-button:hover {
+    background: #e5e7eb;
+}

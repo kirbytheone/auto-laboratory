@@ -169,8 +169,8 @@ def test_logged_user_can_view_task_details(client):
     assert response.status_code == 200
     assert b"Detailed Task" in response.content
     assert b"Task detail description" in response.content
-    assert b"IN_PROGRESS" in response.content
-    assert b"HIGH" in response.content
+    assert task.get_status_display().encode() in response.content
+    assert task.get_priority_display().encode() in response.content
 
 @pytest.mark.django_db
 def test_logged_user_can_open_edit_task_page(client):

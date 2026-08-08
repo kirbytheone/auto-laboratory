@@ -11,10 +11,10 @@ class DjangoTaskListPage(DjangoBasePage):
 
         self.heading = page.get_by_role('heading', name='My Tasks')
         self.create_task_link = page.get_by_role('link', name='Create Task')
-        self.logout_button = page.get_by_role('button', name='Log Out')
+        self.logout_button = page.get_by_role('button', name='Logout')
 
-    def logged_in_as(self, username: str) -> Locator:
-        return self.page.get_by_text(f'Logged in as {username}')
+    def current_user(self) -> Locator:
+        return self.page.get_by_test_id('current-user')
 
     def logout(self) -> None:
         self.logout_button.click()

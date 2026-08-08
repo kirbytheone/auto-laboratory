@@ -51,7 +51,15 @@
                 {{ task.get_priority_display }}
             </span>
         </p>
-        <p><strong>Due date:</strong> {{ task.due_date }}</p>
+        <p>
+            <strong>Due date:</strong>
+
+            {% if task.due_date %}
+                {{ task.due_date }}
+            {% else %}
+                No due date
+            {% endif %}
+        </p>
         <p><strong>Owner:</strong> {{ task.owner.username }}</p>
     </section>
 
@@ -75,7 +83,9 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No comments yet.</p>
+            <div class="section-empty">
+                <p>No comments yet.</p>
+            </div>
         {% endif %}
 
         <h3>Add Comment</h3>
@@ -115,7 +125,9 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No attachments yet.</p>
+            <div class="section-empty">
+                <p>No attachments yet.</p>
+            </div>
         {% endif %}
 
         <h3>Add Attachment</h3>
