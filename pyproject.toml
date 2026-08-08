@@ -14,3 +14,8 @@ select = [
     "F",
     "I",
 ]
+
+[tool.bandit]
+exclude_dirs = [
+    "django_app/*/migrations",
+]
