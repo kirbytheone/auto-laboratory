@@ -25,7 +25,7 @@ def test_successful_registration(page):
 
     expect(page).to_have_url(f'{BASE_URL}{DjangoTaskListPage.PATH}')
     expect(task_list_page.heading).to_be_visible()
-    expect(task_list_page.logged_in_as(user.username)).to_be_visible()
+    expect(task_list_page.current_user()).to_have_text(user.username)
     expect(task_list_page.logout_button).to_be_visible()
 
 @pytest.mark.django_app

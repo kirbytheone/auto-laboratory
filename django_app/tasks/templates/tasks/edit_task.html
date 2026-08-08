@@ -4,19 +4,26 @@
 
 {% block content %}
 
-<h1>Edit Task</h1>
+<section class="form-page">
+    <div class="form-panel">
+        <h1>Edit Task</h1>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
 
-    <button type="submit">Save Changes</button>
-</form>
+            <div class="form-actions">
+                <button type="submit">Save Changes</button>
 
-<p>
-    <a href="{% url 'task_detail' task.pk %}">
-        Back to task
-    </a>
-</p>
+                <a
+                    href="{% url 'task_detail' task.pk %}"
+                    class="button-link button-secondary"
+                >
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
 
 {% endblock %}
