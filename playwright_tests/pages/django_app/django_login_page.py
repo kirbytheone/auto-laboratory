@@ -12,7 +12,6 @@ class DjangoLoginPage(DjangoBasePage):
         self.username_input = page.get_by_label('Username')
         self.password_input = page.get_by_label('Password')
         self.login_button = page.get_by_role('button', name='Log In')
-        self.tasks_link = page.get_by_role('link', name='Tasks')
 
         self.invalid_credentials_message = page.get_by_text(
             'Invalid username or password.'

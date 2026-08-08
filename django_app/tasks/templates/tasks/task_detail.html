@@ -17,7 +17,6 @@
             <a
                 href="{% url 'edit_task' task.pk %}"
                 class="button-link"
-                data-testid="edit-task"
             >
                 Edit Task
             </a>
@@ -114,7 +113,7 @@
                         data-attachment-id="{{ attachment.pk }}"
                     >
                         <a href="{{ attachment.file.url }}">
-                            {{ attachment.file.name }}
+                            {{ attachment.filename }}
                         </a>
 
                         <small>
