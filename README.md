@@ -10,7 +10,7 @@ and automated test reporting using Python-based tools.
 This project is actively evolving with additional testing capabilities and framework integrations.
 
 Implemented:
-- API tests with pytest and requests(Reserved for external HTTP API integration tests.)
+- DRF backend tests using pytest-django. External API contract tests will be added separately.
 - Playwright UI tests
 - Django task management web application
 - Django model and view tests
@@ -36,7 +36,6 @@ Current coverage includes:
 - Python
 - pytest
 - requests
-- Selenium
 - Playwright
 - Django
 - pytest-django

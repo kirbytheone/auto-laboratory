@@ -51,7 +51,7 @@ The goal is to build realistic engineering experience and maintain a portfolio t
 - browser automation with Playwright and pytest
 - Page Object Model
 - generated test data
-- separate practice and Django application tests
+- Playwright tests currently cover Django application browser flows.
 
 `api_tests/`
 - standalone API testing utilities and scenarios
