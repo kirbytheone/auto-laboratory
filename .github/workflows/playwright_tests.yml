@@ -15,7 +15,7 @@ jobs:
 
     env:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DEBUG: "False"
+      DJANGO_DEBUG: "False"
       PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
       PLAYWRIGHT_TEST_USERNAME: playwright_ci_user
       PLAYWRIGHT_TEST_PASSWORD: StrongCiPassword123!
@@ -90,7 +90,6 @@ jobs:
       - name: Run Django Playwright tests
         run: |
           pytest -q \
-            -m django_app \
             playwright_tests/tests/django_app \
             --tracing=retain-on-failure
 
