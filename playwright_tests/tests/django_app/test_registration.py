@@ -7,7 +7,6 @@ from playwright_tests.pages.django_app.django_register_page import DjangoRegiste
 from playwright_tests.pages.django_app.django_task_list_page import DjangoTaskListPage
 
 
-@pytest.mark.django_app
 def test_successful_registration(page):
     user = generate_user_data()
 
@@ -28,7 +27,7 @@ def test_successful_registration(page):
     expect(task_list_page.current_user()).to_have_text(user.username)
     expect(task_list_page.logout_button).to_be_visible()
 
-@pytest.mark.django_app
+
 def test_registration_with_password_mismatch(page):
     user = generate_user_data()
 
@@ -47,7 +46,7 @@ def test_registration_with_password_mismatch(page):
     )
     expect(register_page.password_mismatch_error).to_be_visible()
 
-@pytest.mark.django_app
+
 def test_registration_with_duplicate_username(page):
     user = generate_user_data()
 
@@ -76,7 +75,7 @@ def test_registration_with_duplicate_username(page):
     expect(page).to_have_url(f'{BASE_URL}{DjangoRegisterPage.PATH}')
     expect(register_page.duplicate_username_error).to_be_visible()
 
-@pytest.mark.django_app
+
 def test_registration_with_duplicate_email(page):
     user = generate_user_data()
 
@@ -105,7 +104,7 @@ def test_registration_with_duplicate_email(page):
     expect(page).to_have_url(f'{BASE_URL}{DjangoRegisterPage.PATH}')
     expect(register_page.duplicate_email_error).to_be_visible()
 
-@pytest.mark.django_app
+
 def test_registration_with_common_password(page):
     user = generate_user_data()
     weak_password = 'password'
