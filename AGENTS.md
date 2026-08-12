@@ -11,7 +11,6 @@ The project combines:
 - pytest
 - pytest-django
 - Playwright with Python
-- Selenium
 - API testing
 - Docker
 - GitHub Actions
@@ -54,11 +53,9 @@ The goal is to build realistic engineering experience and maintain a portfolio t
 - generated test data
 - separate practice and Django application tests
 
-`selenium_tests/`
-- Selenium automation and framework practice
-
 `api_tests/`
 - standalone API testing utilities and scenarios
+- (Reserved for external HTTP API integration tests.)
 
 ## Review Priorities
 

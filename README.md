@@ -10,8 +10,7 @@ and automated test reporting using Python-based tools.
 This project is actively evolving with additional testing capabilities and framework integrations.
 
 Implemented:
-- API tests with pytest and requests
-- Selenium UI tests
+- API tests with pytest and requests(Reserved for external HTTP API integration tests.)
 - Playwright UI tests
 - Django task management web application
 - Django model and view tests
@@ -19,9 +18,6 @@ Implemented:
 - Test screenshots and reports structure
 
 In progress:
-- HTML reporting
-- CI/CD pipeline integration
-- Django REST Framework API endpoints + tests
 - Expanded Playwright end-to-end scenarios
 - Authentication flow improvements
 
@@ -53,7 +49,6 @@ Current coverage includes:
 ```text
 auto-laboratory/
 ├── api_tests/                # API automation with pytest + requests
-├── selenium_tests/           # Selenium UI automation
 ├── playwright_tests/         # Playwright UI automation
 ├── django_app/
 │   ├── config/              # Django project configuration
