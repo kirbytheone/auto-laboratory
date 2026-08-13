@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'accounts',
     'tasks',
     'rest_framework',
-    'rest_framework.authtoken',
     'drf_spectacular',
 ]
 
@@ -73,8 +72,7 @@ REST_FRAMEWORK = {
         'drf_spectacular.openapi.AutoSchema'),
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
