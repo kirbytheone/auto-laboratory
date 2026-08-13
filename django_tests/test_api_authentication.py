@@ -17,7 +17,7 @@ def test_valid_refresh_token_returns_new_access_token(api_client, create_user):
         },
         format='json',
     )
-
+    assert token_response.status_code == 200
     refresh_token = token_response.json()['refresh']
 
     refresh_response = api_client.post(
@@ -50,7 +50,7 @@ def test_refresh_token_cannot_authenticate_task_api(api_client, create_user, cre
         },
         format='json',
     )
-
+    assert token_response.status_code == 200
     refresh_token = token_response.json()['refresh']
 
     api_client.credentials(
@@ -167,7 +167,7 @@ def test_access_token_allows_access_to_task_api(api_client, create_user, create_
         },
         format='json',
     )
-
+    assert token_response.status_code == 200
     access_token = token_response.json()['access']
 
     api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
@@ -181,7 +181,26 @@ def test_access_token_allows_access_to_task_api(api_client, create_user, create_
     assert response.data['results'][0]['title'] == 'Token Protected Task'
 
 @pytest.mark.django_db
-def test_invalid_token_rejected(api_client):
+def test_unauthenticated_user_cannot_access_task_api(api_client):
+    response = api_client.get(
+        reverse('api-task-list')
+    )
+
+    assert response.status_code == 401
+    assert response.data['detail'] == 'Authentication credentials were not provided.'
+
+@pytest.mark.django_db
+def test_invalid_jwt_token_is_rejected(api_client):
+    api_client.credentials(HTTP_AUTHORIZATION='Bearer invalid-value')
+
+    response = api_client.get(
+        reverse('api-task-list')
+    )
+
+    assert response.status_code == 401
+
+@pytest.mark.django_db
+def test_legacy_token_auth_is_rejected(api_client):
     api_client.credentials(HTTP_AUTHORIZATION='Token invalid-value')
 
     response = api_client.get(
