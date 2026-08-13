@@ -15,9 +15,9 @@ def test_valid_regular_user_login(page):
 
     login_page.open()
     login_page.login(username, password)
-
-    task_list_page = DjangoTaskListPage(page, BASE_URL)
     # TODO: refactor after implementation of user login setup
+    # task_list_page = DjangoTaskListPage(page, BASE_URL)
+
     # expect(page).to_have_url(f'{BASE_URL}{DjangoTaskListPage.PATH}')
     # expect(task_list_page.current_user()).to_have_text(username)
     # expect(task_list_page.logout_button).to_be_visible()
