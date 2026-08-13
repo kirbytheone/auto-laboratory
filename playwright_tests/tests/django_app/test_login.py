@@ -2,7 +2,8 @@ from playwright.sync_api import expect
 
 from playwright_tests.config.settings import BASE_URL, require_test_credentials
 from playwright_tests.pages.django_app.django_login_page import DjangoLoginPage
-from playwright_tests.pages.django_app.django_task_list_page import DjangoTaskListPage
+
+# from playwright_tests.pages.django_app.django_task_list_page import DjangoTaskListPage
 
 
 def test_valid_regular_user_login(page):
