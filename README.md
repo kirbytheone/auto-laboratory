@@ -42,6 +42,39 @@ Current coverage includes:
 - pytest-html
 - Git
 - Page Object Model design
+- PostgreSQL
+
+## Database: PostgreSQL 17
+
+Local development:
+- PostgreSQL provided by Docker Compose
+- Django may run locally against 127.0.0.1:5432
+- Dockerized Django connects using POSTGRES_HOST=db
+
+Required environment variables:
+POSTGRES_DB
+POSTGRES_USER
+POSTGRES_PASSWORD
+POSTGRES_HOST
+POSTGRES_PORT
+
+Schema setup for docker startup:
+```bash
+docker compose up -d db
+python django_app/manage.py migrate
+python django_app/manage.py runserver
+```
+full container mode:
+```bash
+docker compose build
+docker compose run --rm web python django_app/manage.py migrate
+docker compose up
+```
+### DB RESET
+!!!Deletes containers and the PostgreSQL named volume, permanently removing local development database data!!!
+```bash
+docker compose down -v
+```
 
 ## Project Structure
 
@@ -53,7 +86,6 @@ auto-laboratory/
 │   ├── config/              # Django project configuration
 │   ├── tasks/               # Task manager application
 │   ├── manage.py
-│   └── db.sqlite3
 ├── django_tests/            # Django backend tests
 ├── utils/                   # Shared helpers/utilities
 ├── docs/

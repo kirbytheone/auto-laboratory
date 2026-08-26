@@ -41,6 +41,29 @@ The goal is to build realistic engineering experience and maintain a portfolio t
 - permissions and filtering
 - task REST API
 
+## Database: PostgreSQL 17
+
+Local development:
+- PostgreSQL provided by Docker Compose
+- Django may run locally against 127.0.0.1:5432
+- Dockerized Django connects using POSTGRES_HOST=db
+
+Required environment variables:
+POSTGRES_DB
+POSTGRES_USER
+POSTGRES_PASSWORD
+POSTGRES_HOST
+POSTGRES_PORT
+
+Schema setup:
+```bash
+python django_app/manage.py migrate
+```
+
+SQLite fallback is intentionally not supported.
+Local SQLite data was not migrated.
+Migrations are the schema source of truth.
+
 ### Test suites
 
 `django_tests/`
