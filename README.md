@@ -42,7 +42,7 @@ Current coverage includes:
 - pytest-html
 - Git
 - Page Object Model design
-- postgreSQL
+- PostgreSQL
 
 ## Database: PostgreSQL 17
 
@@ -70,6 +70,11 @@ docker compose build
 docker compose run --rm web python django_app/manage.py migrate
 docker compose up
 ```
+### DB RESET
+!!!Deletes containers and the PostgreSQL named volume, permanently removing local development database data!!!
+```bash
+docker compose down -v
+```
 
 ## Project Structure
 
@@ -81,7 +86,6 @@ auto-laboratory/
 │   ├── config/              # Django project configuration
 │   ├── tasks/               # Task manager application
 │   ├── manage.py
-│   └── db.sqlite3
 ├── django_tests/            # Django backend tests
 ├── utils/                   # Shared helpers/utilities
 ├── docs/
