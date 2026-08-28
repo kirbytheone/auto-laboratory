@@ -131,6 +131,7 @@ def test_user_can_register_via_api(api_client):
     )
 
     assert response.status_code == 201
+    assert isinstance(response.data['id'], int)
     assert response.data['username'] == 'api_user'
     assert response.data['email'] == 'api_user@example.com'
     assert 'password' not in response.data
@@ -152,7 +153,7 @@ def test_api_registration_rejects_duplicate_username(api_client, create_user):
             'password': 'StrongPassword123!',
             'password_confirmation': 'StrongPassword123!',
         },
-        fromat='json',
+        format='json',
     )
     
     assert response.status_code == 400
@@ -214,6 +215,53 @@ def test_api_registration_rejects_weak_password(api_client):
     assert response.status_code == 400
     assert 'password' in response.data
     assert User.objects.filter(username="new_user").exists() is False
+
+@pytest.mark.django_db
+def test_api_registration_rejects_password_similar_to_username(api_client):
+    response = api_client.post(
+        reverse('api-register'),
+        {
+            'username': 'similaruser',
+            'email': 'similaruser@example.com',
+            'password': 'similaruser',
+            'password_confirmation': 'similaruser',
+        },
+        format='json',
+    )
+
+    assert response.status_code == 400
+    assert 'password' in response.data
+    assert User.objects.filter(username='similaruser').exists() is False
+
+@pytest.mark.django_db
+def test_registration_preserves_password_whitespace_for_jwt_token(api_client):
+    password = ' StrongPassword123! '
+
+    register_response = api_client.post(
+        reverse('api-register'),
+        {
+            'username': 'whitespace_user',
+            'email': 'whitespace_user@example.com',
+            'password': password,
+            'password_confirmation': password,
+        },
+        format='json',
+    )
+
+    assert register_response.status_code == 201
+
+    token_response = api_client.post(
+        reverse('token_obtain_pair'),
+        {
+            'username': 'whitespace_user',
+            'password': password,
+        },
+        format='json',
+    )
+
+    assert token_response.status_code == 200
+    assert 'access' in token_response.data
+    assert 'refresh' in token_response.data
 
 @pytest.mark.django_db
 def test_api_registration_rejects_invalid_email(api_client):
@@ -287,30 +335,21 @@ def test_register_user_can_obtain_jwt_and_access_task_api(api_client):
 
     assert response.status_code == 200
 
+@pytest.mark.django_db
+def test_registration_succeeds_with_invalid_bearer_token(api_client):
+    api_client.credentials(
+        HTTP_AUTHORIZATION='Berearer definately-invalid-token'
+    )
 
+    response = api_client.post(
+        reverse('api-register'),
+        {
+            'username': 'public_user',
+            'email': 'public_user@example.com',
+            'password': 'StrongPassword123!',
+            'password_confirmation': 'StrongPassword123!',
+        },
+        format='json',
+    )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    assert response.status_code == 201
