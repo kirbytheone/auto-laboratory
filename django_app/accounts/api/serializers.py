@@ -28,7 +28,7 @@ class UserRegistrationSerializer(serializers.Serializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirmation']:
             raise serializers.ValidationError(
-                {'password_confirmation': 'Passwords do not match'}
+                {'password_confirmation': 'Passwords do not match'} # nosec B105
             )
 
         try:
