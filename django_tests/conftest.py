@@ -14,12 +14,14 @@ def temporary_media_root(tmp_path):
 def create_user():
     def _create_user(
             username="testuser",
+            email="",
             password="testpass123",
             is_staff=False,
             is_superuser=False,
     ):
         return User.objects.create_user(
             username=username,
+            email=email,
             password=password,
             is_staff=is_staff,
             is_superuser=is_superuser,
