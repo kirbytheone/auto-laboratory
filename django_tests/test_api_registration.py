@@ -338,7 +338,7 @@ def test_register_user_can_obtain_jwt_and_access_task_api(api_client):
 @pytest.mark.django_db
 def test_registration_succeeds_with_invalid_bearer_token(api_client):
     api_client.credentials(
-        HTTP_AUTHORIZATION='Berearer definately-invalid-token'
+        HTTP_AUTHORIZATION='Bearer definitely-invalid-token'
     )
 
     response = api_client.post(

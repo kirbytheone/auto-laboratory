@@ -2,23 +2,30 @@ import requests
 
 
 class BaseClient:
-    def __init__(self, base_url: str):
-        self.base_url = base_url
+    def __init__(self, base_url: str, timeout: float = 10.0):
+        self.base_url = base_url.rstrip('/')
+        self.timeout = timeout
+        self.session = requests.Session()
+
+    def _build_url(self, endpoint: str) -> str:
+        return f'{self.base_url}/{endpoint.lstrip('/')}'
 
     def _request(self, method: str, endpoint: str, **kwargs):
-        url = f'{self.base_url}{endpoint}'
+        url = self._build_url(endpoint)
 
-        print(f"\n[REQUEST] {method} {url}")
-        if "json" in kwargs:
-            print(f'[PAYLOAD] {kwargs["json"]}')
+        kwargs.setdefault('timeout', self.timeout)
 
-        response = requests.request(method, url, **kwargs)
+        response = self.session.request(
+            method=method,
+            url=url,
+            **kwargs,
+        )
 
-        print(f'[RESPONSE] Status: {response.status_code}')
-        try:
-            print(f'[RESPONSE BODY] {response.json()}')
-        except Exception:
-            print('[RESPONSE BODY] Not JSON')
+        print(
+            f'[API] {method.upper()} {endpoint} '
+            f'-> {response.status_code} '
+            f'({response.elapsed.total_seconds():.3f}s)'
+        )
 
         return response
 
@@ -30,6 +37,9 @@ class BaseClient:
 
     def put(self, endpoint: str, **kwargs):
         return self._request('PUT', endpoint, **kwargs)
+
+    def patch(self, endpoint: str, **kwargs):
+        return self._request('PATCH', endpoint, **kwargs)
 
     def delete(self, endpoint: str, **kwargs):
         return self._request('DELETE', endpoint, **kwargs)

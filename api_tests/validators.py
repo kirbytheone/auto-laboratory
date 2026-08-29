@@ -1,7 +1,5 @@
 from jsonschema import validate
 
-from api_tests.schemas.post_schema import POST_SCHEMA
-
 
 def validate_status_code(response, expected_status_code: int):
     actual_status_code = response.status_code
@@ -21,8 +19,3 @@ def validate_response_field(response, field_name: str, expected_value):
         f'Actual value {actual_value}. '
         f'Full response body: {response_body}'
     )
-
-def validate_post_schema(response):
-    response_body = response.json()
-
-    validate(instance=response_body, schema=POST_SCHEMA)
