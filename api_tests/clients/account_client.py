@@ -7,7 +7,7 @@ class AccountClient(BaseClient):
 
     def obtain_token_pair(self, username: str, password: str):
         return self.post(
-            '/api/auth/token',
+            '/api/auth/token/',
             json={
                 'username': username,
                 'password': password,
