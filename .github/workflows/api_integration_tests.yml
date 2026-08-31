@@ -37,7 +37,7 @@ jobs:
 
       API_TEST_BASE_URL: http://127.0.0.1:8000
       DJANGO_DEBUG: 'False'
-      SECRET_KEY: github-actions-test-secret
+      DJANGO_SECRET_KEY: github-actions-test-secret
 
     steps:
       - name: Checkout repository
