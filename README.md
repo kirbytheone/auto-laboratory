@@ -31,6 +31,28 @@ Current coverage includes:
 - Authentication access checks
 - File upload/download/delete validation
 
+## API Integration Tests
+
+`api_tests` contains black-box HTTP tests for the running Auto Laboratory API.
+
+These tests use:
+
+- `pytest` for test execution and fixtures
+- `requests` for real HTTP communication
+- JWT authentication
+- PostgreSQL-backed Django/DRF application
+
+Unlike `django_tests`, these tests do not use Django internals such as ORM models, `APIClient`, `reverse()`, or Django settings.
+
+### Local execution
+
+Start PostgreSQL and the Django application first.
+
+For Docker:
+
+```bash
+docker compose up --build -d
+
 ## Tech Stack
 
 - Python
