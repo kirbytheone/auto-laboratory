@@ -7,6 +7,9 @@ class BaseClient:
         self.timeout = timeout
         self.session = requests.Session()
 
+    def close(self):
+        self.session.close()
+
     def _build_url(self, endpoint: str) -> str:
         return f'{self.base_url}/{endpoint.lstrip('/')}'
 

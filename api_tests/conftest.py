@@ -12,7 +12,11 @@ def api_base_url():
 
 @pytest.fixture
 def account_client(api_base_url):
-    return AccountClient(api_base_url)
+    client = AccountClient(api_base_url)
+
+    yield client
+
+    client.close()
 
 @pytest.fixture
 def user_payload():
@@ -49,8 +53,14 @@ def authenticated_tasks_client(api_base_url, jwt_tokens):
         }
     )
 
-    return client
+    yield client
+
+    client.close()
 
 @pytest.fixture
 def tasks_client(api_base_url):
-    return TasksClient(api_base_url)
+    client = TasksClient(api_base_url)
+
+    yield client
+
+    client.close()

@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   api-integration-tests:
     runs-on: ubuntu-latest
@@ -23,7 +26,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres -d auto_laboratory"
+          --health-cmd="pg_isready -U auto_laboratory_user -d auto_laboratory"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -46,7 +49,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.12'
+          python-version: '3.14'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -56,7 +59,7 @@ jobs:
 
       - name: Start Django server
         run: |
-          python django_app/manage.py runserver 127.0.0.1:8000 > django-server.log 2>&1 &
+          python django_app/manage.py runserver 127.0.0.1:8000 --noreload > django-server.log 2>&1 &
           echo $! > django-server.pid
 
       - name: Wait for Django API
@@ -74,5 +77,10 @@ jobs:
           cat django-server.log
           exit 1
 
+      - name: Show Django server log on failure
+        if: failure()
+        run: cat django-server.log
+
       - name: Run API integration tests
-        run: pytest -q api_tests
+        run: pytest -q -c pytest-api.ini
+        timeout-minutes: 10
