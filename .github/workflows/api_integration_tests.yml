@@ -1,0 +1,86 @@
+name: Auto Laboratory API Integration Test
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  api-integration-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: auto_laboratory
+          POSTGRES_USER: auto_laboratory_user
+          POSTGRES_PASSWORD: ci-postgres-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U auto_laboratory_user -d auto_laboratory"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      POSTGRES_DB: auto_laboratory
+      POSTGRES_USER: auto_laboratory_user
+      POSTGRES_PASSWORD: ci-postgres-password
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: 5432
+
+      API_TEST_BASE_URL: http://127.0.0.1:8000
+      DJANGO_DEBUG: 'False'
+      DJANGO_SECRET_KEY: github-actions-test-secret
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Apply migrations
+        run: python django_app/manage.py migrate
+
+      - name: Start Django server
+        run: |
+          python django_app/manage.py runserver 127.0.0.1:8000 --noreload > django-server.log 2>&1 &
+          echo $! > django-server.pid
+
+      - name: Wait for Django API
+        run: |
+          for i in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8000/api/docs/ > /dev/null; then
+              echo "Django is ready"
+              exit 0
+            fi
+            
+            sleep 1
+          done
+          
+          echo "Django failed to start"
+          cat django-server.log
+          exit 1
+
+      - name: Show Django server log on failure
+        if: failure()
+        run: cat django-server.log
+
+      - name: Run API integration tests
+        run: pytest -q -c pytest-api.ini
+        timeout-minutes: 10

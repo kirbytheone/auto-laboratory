@@ -10,7 +10,7 @@ and automated test reporting using Python-based tools.
 This project is actively evolving with additional testing capabilities and framework integrations.
 
 Implemented:
-- DRF backend tests using pytest-django. External API contract tests will be added separately.
+- DRF backend tests using pytest-django.
 - Playwright UI tests
 - Django task management web application
 - Django model and view tests
@@ -30,6 +30,31 @@ Current coverage includes:
 - Django view testing
 - Authentication access checks
 - File upload/download/delete validation
+
+## API Integration Tests
+
+`api_tests` contains black-box HTTP tests for the running Auto Laboratory API.
+
+These tests use:
+
+- `pytest` for test execution and fixtures
+- `requests` for real HTTP communication
+- JWT authentication
+- PostgreSQL-backed Django/DRF application
+
+Unlike `django_tests`, these tests do not use Django internals such as ORM models, 
+`APIClient`, `reverse()`, or Django settings.
+
+### Local execution
+
+Start PostgreSQL and the Django application first.
+
+For Docker:
+
+```bash
+docker compose up --build -d
+pytest -q -c pytest-api.ini
+```
 
 ## Tech Stack
 
